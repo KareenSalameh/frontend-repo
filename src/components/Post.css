@@ -1,0 +1,30 @@
+.post-container {
+    background-color: #d4fcfa;
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+}
+
+.post-title {
+    font-style: italic;
+    font-size: 30px; /* Make the title bigger */
+    margin-bottom: 10px;
+}
+
+.post-owner {
+    display: none; /* Hide the owner */
+}
+
+.post-message {
+    color: rgb(28, 130, 240) !important; /* Change the font color to red */
+    font-size: 18px !important;
+    margin-bottom: 50px;
+    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+   
+    margin-top: 40px;
+}
+
+.post-container button {
+    margin-top: 10px;
+}
