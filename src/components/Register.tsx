@@ -1,66 +1,51 @@
-import { useState } from "react";
+import { useState } from 'react';
+import avatar from '../assets/avatar.jpg';
 import './Register.css';
-import { BrowserRouter, Link } from 'react-router-dom'; // Import Link from react-router-dom
-
 function Register() {
-  const [fullName, setFullName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [location, setLocation] = useState('');
+  const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
 
-  const handleSignUp = () => {
-    // Here you can add your sign-up logic, like sending data to a server
-    // For simplicity, let's just navigate to the login page after sign-up
-    // You can replace this with your actual sign-up logic 
-
-    // After successful sign-up, navigate to the login page
-    //navigate('/login');
-
+  const onImgSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.files && event.target.files[0]) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        if (e.target) {
+          setAvatarUrl(e.target.result as string);
+        }
+      };
+      reader.readAsDataURL(event.target.files[0]);
+    }
   };
 
   return (
-    <BrowserRouter>
-    <div className="registration-container">
-      <h2>Sign Up</h2>
-      <form className="registration-form" onSubmit={handleSignUp}>
+    <div className="register-container">
+      <h1 className="register-title">Register</h1>
+      <p>Fill in the form below to create an account</p>
+      <label className="avatar-label" htmlFor="avatar">
         <input
-          type="text"
-          placeholder="Full Name"
-          value={fullName}
-          onChange={(e) => setFullName(e.target.value)}
-          required
+          id="avatar"
+          type="file"
+          className="avatar-input"
+          onChange={onImgSelected}
         />
-        <input
-          type="email"
-          placeholder="Email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          required
-        />
-        <input
-          type="password"
-          placeholder="Password"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          required
-        />
-        <input
-          type="text"
-          placeholder="Location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          required
-        />
-        <button type="submit">Sign Up</button>
-      </form>
-      
-      {/* Add Link to navigate to the login page */}
-      <div>
-        
-        Already have an account? <Link to="/login">Log in</Link>
-      </div>
+        {avatarUrl ? (
+          <img
+            src={avatarUrl}
+            alt="avatar"
+            className="avatar-preview"
+          />
+        ) : (
+          <img
+            src={avatar}
+            alt="avatar"
+            className="avatar-preview"
+          />
+        )}
+      </label>
+      <input type="file" className="register-input" />
+      <input type="text" className="register-input" placeholder="Username" />
+      <input type="password" className="register-input" placeholder="Password" />
+      <button type="button" className="register-button">Register</button>
     </div>
-    </BrowserRouter>
   );
 }
 

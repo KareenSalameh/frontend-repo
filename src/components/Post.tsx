@@ -8,11 +8,13 @@ export interface PostData {
 
 export interface PostProps {
     post: PostData;
+    onRemoveCbk: () => void;
 }
 
 function Post({ post }: PostProps) {
     const handleClick = () => {
-        console.log("Remove button clicked");
+        console.log("Clicked");
+        onRemoveCbk();
     };
 
     return (
@@ -25,3 +27,7 @@ function Post({ post }: PostProps) {
 }
 
 export default Post;
+function onRemoveCbk() {
+    throw new Error('Function not implemented.');
+}
+

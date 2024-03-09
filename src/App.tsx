@@ -1,10 +1,11 @@
 //import StudentForm from './components/StudentForm'
-import PostsList from './components/PostsList'
+//import PostsList from './components/PostsList'
+import Register from './components/Register'
 
 function App(){
   return(
-    <div className="p-2">
-      <PostsList/>
+    <div className="container">
+      <Register/>
     </div>
 
   )
