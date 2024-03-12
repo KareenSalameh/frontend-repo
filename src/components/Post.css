@@ -1,30 +1,49 @@
 .post-container {
-    background-color: #d4fcfa;
-    padding: 30px;
+    background-color: #f0fafa;
+    padding: 20px;
     border-radius: 10px;
     box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
     margin: 20px;
+    height: 90%;
+    margin-top: 60px;
+    flex: 0 0 calc(25% - 40px); /* Adjust the width of each post container */
+    max-width: calc(25% - 40px); /* Ensure each post container has the same maximum width */
 }
 
 .post-title {
     font-style: italic;
-    font-size: 30px; /* Make the title bigger */
-    margin-bottom: 10px;
+    font-size: 26px; /* Make the title bigger */
+    margin-bottom: -30px;
 }
 
 .post-owner {
     display: none; /* Hide the owner */
+
 }
 
 .post-message {
     color: rgb(28, 130, 240) !important; /* Change the font color to red */
-    font-size: 18px !important;
-    margin-bottom: 50px;
-    font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
-   
+    font-size: 13px !important;
+    margin-bottom: 20px;
+    font-family:Arial, Helvetica, sans-serif;
     margin-top: 40px;
 }
 
-.post-container button {
-    margin-top: 10px;
+.post-image-container {
+    margin-bottom: 20px; /* Add margin below the image container */
+}
+
+.post-image {
+    max-width: 100%; /* Ensure the image fits within its container */
+}
+
+.button-container {
+    margin-top: 10px; /* Adjust the margin top as needed */
+    margin-bottom: -5px;
+}
+
+/* Additional styling for buttons */
+.btn {
+    margin-right: 10px; /* Adjust the margin between buttons as needed */
+    margin-bottom: 5px;
 }

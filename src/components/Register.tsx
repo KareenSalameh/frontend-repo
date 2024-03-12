@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react';
-import avatar from '../assets/avatar.jpg';
+import avatar from '../assets/ava.png';
 import './Register.css';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faImage } from '@fortawesome/free-solid-svg-icons';
@@ -61,11 +61,10 @@ function Register() {
   return (
     <div className="register-container">
       <h1 className="register-title">Register</h1>
-      <p>Fill in the form below to create an account</p>
       <div className="d-flex justify-content-center position-relative">
         <input ref={fileInputRef} id="avatar" type="file" className="avatar-input" onChange={onImgSelected}/>
         {ImgSrc ? (<img src={URL.createObjectURL(ImgSrc)} alt="avatar" className="avatar-preview" />) : (
-          <img src={avatar} alt="avatar" className="avatar-preview" style={{height:"180px", width:"180px", marginBottom:"20px", borderRadius:"50px"}} />)}
+          <img src={avatar} alt="avatar" className="avatar-preview" />)}
       <button type="button" className="btn position-absolute bottom-0 end-0" onClick={selectImg}>
         <FontAwesomeIcon icon={ faImage } className='fa-xl'/>
       </button>
@@ -75,65 +74,13 @@ function Register() {
       <input ref={emailInputRef} type="email" className="register-input" placeholder="Email" />
       <input ref={passwordInputRef} type="password" className="register-input" placeholder="Password" />
       <button type="button" className="register-button" onClick={onRegister}>Register</button>
-      <GoogleLogin onSuccess={onGoogleLoginSuccess} onError={onGoogleLoginFailure} />
+      <div className='google'>
+              <GoogleLogin onSuccess={onGoogleLoginSuccess} onError={onGoogleLoginFailure} />
+
+      </div>
     </div>
   );
 }
 
 export default Register;
 
-// import { useState } from 'react';
-// import avatar from '../assets/avatar.jpg';
-// import './Register.css';
-// import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-// import { faImage } from '@fortawesome/free-solid-svg-icons';
-
-// function Register() {
-//   const [ImgSrc, setImg] = useState<string>();
-
-//   const onImgSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     console.log(event.target.value)
-//     if (event.target.files && event.target.files.length > 0) {
-//       const newUrl = URL.createObjectURL(event.target.files[0]);
-//       setImg(newUrl);
-//       console.log(newUrl)
-//     }
-//   };
-
-//   const onRegister = () => {
-//     console.log('Register');
-//   }
-
-//   const selectImg = () => {
-//     console.log('Select Img');
-//   }
-
-//   return (
-//     <div className="register-container">
-//       <h1 className="register-title">Register</h1>
-//       <p>Fill in the form below to create an account</p>
-//       <label className="avatar-label" htmlFor="avatar">
-        
-//         <input id="avatar" type="file" className="avatar-input" onChange={onImgSelected}/>
-//         {ImgSrc ? (<img src={ImgSrc} alt="avatar" className="avatar-preview" />
-// ) : (
-//           <img
-//             src={avatar}
-//             alt="avatar"
-//             className="avatar-preview"
-//           />
-//         )}
-//       <button type="button" className="btn" onClick={selectImg}>
-//         <FontAwesomeIcon icon={ faImage } className='fa-xl'/>
-//       </button>
-//       </label>
-      
-//       <input type="text" className="register-input" placeholder="Full Name" />
-//       <input type="email" className="register-input" placeholder="Email" />
-//       <input type="password" className="register-input" placeholder="Password" />
-//       <button type="button" className="register-button" onClick={onRegister}>Register</button>
-//     </div>
-//   );
-// }
-
-// export default Register;

@@ -1,32 +1,66 @@
+body{
+  background-color: aliceblue;
+}
 .posts-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-  }
-  
-  .post {
-    width: 200px;
-    height: 200px;
-    margin: 10px;
-    padding: 20px;
-    border-radius: 10px;
-    background-color: #f0f0f0;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    transition: transform 0.3s ease;
-  }
-  
-  .post:hover {
-    transform: translateY(-5px);
-  }
-  
-  .post-title {
-    font-size: 18px;
-    font-weight: bold;
-    margin-bottom: 10px;
-  }
-  
-  .post-message {
-    font-size: 14px;
-    color: #555;
-  }
-  
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-top: 20px; /* Adjust as needed */
+}
+
+.taskbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 6px 20px;
+  background-color: #f0fafa;
+  border-bottom: 1px solid #ccc;
+}
+
+.taskbar input[type="text"] {
+  padding: 8px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+}
+
+.taskbar button {
+  padding: 8px 16px;
+  border: none;
+  border-radius: 5px;
+  background-color: #007bff;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.taskbar button:hover {
+  background-color: #0056b3;
+}
+
+.add-button {
+  display: inline-block;
+  padding:  8px;
+  background-color: #0056b3;
+  color: white;
+  text-decoration: none;
+  font-size: 15px;
+  transition: background-color 0.3s;
+  margin-right: 770px;
+}
+
+.add-button:hover {
+  background-color: #033b76;
+}
+
+.search-container {
+  position: relative;
+}
+
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #555;
+  cursor: pointer;
+}

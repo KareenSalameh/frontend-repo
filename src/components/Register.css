@@ -1,14 +1,15 @@
-body{
-  background-image: url(../assets/trip.jpg);
+body {
+  background-image: url(../assets/dead-sea.jpg);
+  background-size: cover; /* Ensure the background image covers the entire background */
   backdrop-filter: blur(3px);
 }
+
 .register-container {
-  max-width: 500px;
-  margin: 0 auto;
+  max-width: 450px;
+  margin: 50 auto;
   margin-top: 30px;
   padding: 20px;
   border-radius: 10px;
-  background-color: #e3e6eb;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
@@ -18,7 +19,7 @@ body{
   text-align: center;
   font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
   font-size: 50px;
-  color: #90aecb;
+  color: #fcfcfc;
 
 }
 
@@ -26,20 +27,23 @@ body{
   width: 100%;
   padding: 10px;
   margin-bottom: 20px;
-  border: 1px solid #9ac5f0;
+  border: 1px solid #528ac2;
   border-radius: 5px;
   font-size: 16px;
 }
 
 .register-button {
-  width: 100%;
-  padding: 10px;
-  background-color: #88cee7;
-  color: #fff;
+  width: 27%;
+  height: 40px;
+  margin-left: 130px;
+  background-color: #fdffff;
+  color: #6daee4;
   border: none;
   border-radius: 5px;
-  font-size: 16px;
+  font-size: 20px;
   cursor: pointer;
+  margin-bottom: 10px;
+  font-weight: 500;
 }
 
 .register-button:hover {
@@ -52,15 +56,27 @@ body{
 
 .avatar-label {
   display: block;
-  width: 150px;
-  height: 150px;
+  width: 150px; /* Set the width of the avatar container */
+  height: 150px; /* Set the height of the avatar container */
   margin: 0 auto 20px;
   border-radius: 50%;
   overflow: hidden;
 }
 
 .avatar-preview {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  width: 35%; /* Ensure the image fills the entire container width */
+  height: 140px;
+  border-radius: 20px;
+  margin-bottom: 30px;
+}
+
+
+.google {
+  text-align: center; /* Center the button horizontally */
+  margin-top: 10px; /* Add some top margin for spacing */
+  margin-left: 60px;
+}
+
+.google .button {
+  /* Add additional styling specific to the GoogleLogin button if needed */
 }
