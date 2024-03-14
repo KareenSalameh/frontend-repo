@@ -1,0 +1,59 @@
+.post-container {
+    background-color: #f0fafa;
+    padding: 20px;
+    border-radius: 20px;
+    box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
+    margin: 20px;
+    flex: 0 0 calc(25% - 10px); 
+    max-width: calc(25% - 30px); 
+    width: calc(25% - 40px); 
+    display: inline-block;
+    vertical-align: top; 
+    margin-top: 30px;
+    position: relative; /* Add position relative */
+}
+
+.post-title {
+    font-style: italic;
+    font-size: 26px;
+    margin-bottom: -30px;
+    color: #007bff;
+}
+
+/* .post-owner {
+    display: ;
+} */
+
+.post-message {
+    color: rgb(28, 130, 240) !important;
+    font-size: 15px !important;
+    margin-bottom: 20px;
+    font-family:Georgia, 'Times New Roman', Times, serif;
+    margin-top: 50px;
+}
+
+.post-image-container {
+    max-height: 100px; 
+    overflow: hidden;
+}
+
+
+.post-image {
+    width: 100%; 
+    height: auto; 
+}
+
+.button-container {
+    position: absolute;
+    bottom: 20px; /* Adjust bottom spacing */
+    left: 0; /* Align to left */
+    width: 100%; /* Take full width */
+    text-align: center; /* Center the buttons horizontally */
+    margin-top: 10px;
+    margin-bottom: -5px;
+}
+
+.btn {
+    margin-right: 10px;
+    margin-bottom: 5px;
+}

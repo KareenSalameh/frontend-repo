@@ -1,12 +1,12 @@
 import { useEffect, useState } from 'react';
 import Post, { PostData } from './Post';
-import postService, { CanceledError } from '../services/posts-service';
+import postService, { CanceledError } from '../../services/posts-service';
 import './PostsList.css';
 
 
 function PostsList() {
     const [posts, setPosts] = useState<PostData[]>([]);
-    const [error, setError] = useState<string | null>(null); // Adjusted error state type
+    const [error, setError] = useState<string | null>(null); 
     useEffect(() => {
         const { req, abort } = postService.getAllPosts();
         req.then((res) => {
@@ -26,6 +26,7 @@ function PostsList() {
         const newPosts = posts.filter((post, index) => index !== key);
         setPosts(newPosts);
     };
+    
 
     return (
         <div>

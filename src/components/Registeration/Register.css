@@ -1,6 +1,6 @@
 body {
-  background-image: url(../assets/dead-sea.jpg);
-  background-size: cover; /* Ensure the background image covers the entire background */
+  background-image: url(../../assets/dead-sea.jpg);
+  background-size: cover; 
   backdrop-filter: blur(3px);
 }
 
@@ -73,10 +73,20 @@ body {
 
 .google {
   text-align: center; /* Center the button horizontally */
-  margin-top: 10px; /* Add some top margin for spacing */
+  margin-bottom: -10px; /* Add some top margin for spacing */
   margin-left: 60px;
 }
 
 .google .button {
   /* Add additional styling specific to the GoogleLogin button if needed */
+}
+
+.link {
+  display: block;
+  text-align: center; /* Center the link horizontally */
+  margin-top: 60px; /* Add some top margin for spacing */
+  font-size: 16px;
+  font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  margin-left: -20px;
+  color: #e7e1e1;
 }

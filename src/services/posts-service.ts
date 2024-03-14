@@ -1,5 +1,5 @@
 import apiClient, { CanceledError } from "./api-client"
-import { PostData } from "../components/Post"
+import { PostData } from "../components/Posting/Post"
 
 
 export { CanceledError }
@@ -9,18 +9,19 @@ const getAllPosts = () => {
     return { req, abort: () => abortController.abort() }
 
 }
-// export const getAllPosts = () => {
-   
-//     return new Promise<PostData[]>((resolve, reject) => {
+// export const getReviewById = (reviewId: string) => {
+//     return new Promise<Review>((resolve, reject) => {
 //       apiClient
-//         .get(`/userpost/`)
+//         .get(`/reviews/id/${reviewId}`)
 //         .then((response) => {
-//           resolve(response.data as Pos[]);
+//           const review = response.data as Review;
+//           resolve(review);
 //         })
 //         .catch((error) => {
 //           reject(error);
 //         });
 //     });
-// }
+//   };
+
 
 export default { getAllPosts }

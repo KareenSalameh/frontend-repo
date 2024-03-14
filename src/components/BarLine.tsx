@@ -7,9 +7,9 @@ const Navbar: React.FC = () => {
   //const navigate = useNavigate();
   const location = useLocation();
 
-  const handleLogout = () => {
-    console.log("logout")
-  };
+  // const handleLogout = () => {
+  //   console.log("logout")
+  // };
 
   return (
     <>
@@ -32,45 +32,26 @@ const Navbar: React.FC = () => {
           <div className="collapse navbar-collapse" id="navbarSupportedContent">
             <ul className="navbar-nav me-auto mb-2 mb-lg-0">
               <li className="nav-item">
-                <Link
-                  to="/"
-                  className={`nav-link ${
-                    location.pathname === "/" ? "active" : ""
-                  }`}
-                >
+                <Link to="/" className={`nav-link ${location.pathname === "/" ? "active" : ""}`} >
                   Home
                 </Link>
               </li>
               <li className="nav-item">
-                             </li>
+              </li>
               <li className="nav-item">
-                <Link
-                  to="/profile"
-                  className={`nav-link ${
-                    location.pathname === "/profile" ? "active" : ""
-                  }`}
-                >
+                <Link to="/profile" className={`nav-link ${location.pathname === "/profile" ? "active" : ""}`}>
                   Profile
                 </Link>
               </li>
               <li className="nav-item">
-                <Link
-                  to="/myposts"
-                  className={`nav-link ${
-                    location.pathname === "/myposts" ? "active" : ""
-                  }`}
-                >
+                <Link to="/myposts" className={`nav-link ${location.pathname === "/myposts" ? "active" : ""}`}>
                   My Posts
                 </Link>
               </li>
             </ul>
-            <button
-              className="btn btn-link"
-              type="button"
-              onClick={handleLogout}
-            >
+            <Link to="/login" className="logout-link">
               Logout
-            </button>
+            </Link>
           </div>
         </div>
       </nav>

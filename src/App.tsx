@@ -1,10 +1,11 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import Navbar from '../src/components/BarLine';
-import PostsList from '../src/components/PostsList';
-import Register from '../src/components/Register';
+import PostsList from './components/Posting/PostsList';
+import Register from './components/Registeration/Register';
 //import test from '../src/components/test';
-import Profile from '../src/components/Profile';
-import MyPosts from '../src/components/MyPosts';
+import Profile from './components/Profile/Profile';
+import MyPosts from './components/Posting/MyPosts';
+import Login from '../src/components/Registeration/Login';
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path='/profile' component={Profile} />
 
           <Route path='/myposts' component={MyPosts} />
+          <Route path='/login' component={Login} />
 
           {/* Add more routes here as needed */}
         </Switch>
