@@ -2,7 +2,7 @@ import React from "react";
 //import { logout } from "../services/user-service";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-
+import './BarLine.css'
 const Navbar: React.FC = () => {
   //const navigate = useNavigate();
   const location = useLocation();
@@ -13,7 +13,7 @@ const Navbar: React.FC = () => {
 
   return (
     <>
-      <nav className="navbar navbar-expand-lg bg-light">
+      <nav className="navbar navbar-expand-lg bg-light navbar-custom">
         <div className="container-fluid">
           <Link to="/" className="navbar-brand" style={{ color: 'blue' }}>
             TraveIL

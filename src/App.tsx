@@ -6,6 +6,7 @@ import Register from './components/Registeration/Register';
 import Profile from './components/Profile/Profile';
 import MyPosts from './components/Posting/MyPosts';
 import Login from '../src/components/Registeration/Login';
+//import PostComments from './components/PostComment';
 
 function App() {
   return (
