@@ -2,6 +2,7 @@ import apiClient, { CanceledError } from "./api-client"
 import { Comment } from "./comment-service";
 
 export interface PostData {
+    id : string
     title: string;
     message: string;
     _id?: string;
@@ -32,7 +33,7 @@ const fetchPost = async () => {
 export const getPostById = (postId: string) => {
     return new Promise<PostData>((resolve, reject) => {
       apiClient
-        .get(`/reviews/id/${postId}`)
+        .get(`/userpost/${postId}`)
         .then((response) => {
           const review = response.data as PostData;
           resolve(review);
@@ -43,4 +44,17 @@ export const getPostById = (postId: string) => {
     });
   };
 
+  export const getConnectedUserReviews = () => {
+    return new Promise<PostData[]>((resolve, reject) => {
+      apiClient
+        .get(`/userpost`)
+        .then((response) => {
+          const reviews = response.data as PostData[];
+          resolve(reviews);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  };
 export default { getAllPosts, fetchPost }

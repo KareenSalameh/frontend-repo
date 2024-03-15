@@ -19,7 +19,7 @@ function App() {
 
           <Route path='/profile' component={ProfilePage} />
 
-          <Route path='/myposts' component={MyPosts} />
+          <Route path='/myposts' component={MyPost} />
           <Route path='/login' component={Login} />
           <Route path='/comments/:postId' component={PostComments} />
 
@@ -43,6 +43,14 @@ function ProfilePage() {
     <>
       <Navbar />
       <Profile />
+    </>
+  );
+}
+function MyPost() {
+  return (
+    <>
+      <Navbar />
+      <MyPosts />
     </>
   );
 }

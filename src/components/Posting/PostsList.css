@@ -1,5 +1,6 @@
 body {
   background-color: aliceblue;
+  
 }
 
 .posts-container {
@@ -8,6 +9,7 @@ body {
   justify-content: flex-start; 
   overflow-x: auto; 
   margin-top: 26px;
+  filter:brightness(93%);
 }
 
 .post-container {

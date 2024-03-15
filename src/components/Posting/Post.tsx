@@ -49,7 +49,7 @@ const Post: React.FC<PostProps> = ({ post }) => {
             <h1 className="post-title">{post.title}</h1>
             <p className="post-message">{post.message}</p>
             <img src={post.postImg} alt="Post" className="post-image" />
-            <p>Comments: {commentCount}</p>
+            <p className="comment-count">Comments: {commentCount}</p>
             <div className="comments-container">
            
         </div>

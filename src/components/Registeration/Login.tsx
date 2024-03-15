@@ -31,7 +31,7 @@ function Login() {
 
     try {
       await loginUser(email, password);
-       // Retrieve existing user data from local storage
+      
    // const existingUserData = JSON.parse(localStorage.getItem('user') || '{}');
 
     // Update email and password with the new values

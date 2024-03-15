@@ -38,7 +38,7 @@ function Register() {
       try {
       const res = await registerUser(user);
       console.log(res);
-      localStorage.setItem('user', JSON.stringify({ name: user.name , imgUrl: user.imgUrl, email: user.email }));
+      localStorage.setItem('user', JSON.stringify({ id: user._id, name: user.name , imgUrl: user.imgUrl, email: user.email }));
       // Redirect to login page after successful registration
       history.push('/login');
       } catch (e) {

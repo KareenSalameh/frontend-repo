@@ -1,5 +1,6 @@
 import { CredentialResponse } from "@react-oauth/google";
 import apiClient from "./api-client";
+import axios from 'axios';
 
 export interface IUser{
     name: string,
@@ -50,19 +51,36 @@ export const getUserData = () => {
     });
   }; 
 
-export const updateUser = (user: IUser) => {
-    return new Promise<void>((resolve, reject) => {
-      apiClient
-        .put(`/user`, user)
-        .then(() => {
-          resolve();
-        })
-        .catch((error) => {
-          console.log(error);
-          reject(error);
-        });
-    });
-  };
+// export const updateUser = (user: IUser) => {
+//     return new Promise<void>((resolve, reject) => {
+//       apiClient
+//         .put(`/user/${user._id}`, user)
+//         .then(() => {
+//           resolve();
+//         })
+//         .catch((error) => {
+//           console.log(error);
+//           reject(error);
+//         });
+//     });
+//   };
+export const updateUser = (user: IUser, authToken: string) => {
+  return new Promise<void>((resolve, reject) => {
+    axios
+      .put(`/user/${user._id}`, user, {
+        headers: {
+          Authorization: `Bearer ${authToken}` // Include the authentication token in the request headers
+        }
+      })
+      .then(() => {
+        resolve();
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(error);
+      });
+  });
+};
 
   // Update the loginUser function to return user data
 export const loginUser = (email: string, password: string) => {
@@ -87,28 +105,6 @@ export const loginUser = (email: string, password: string) => {
   });
 };
 
-  // export const loginUser = (email: string, password: string) => {
-  //   return new Promise<IUser>((resolve, reject) => {
-  //     console.log('Login');
-  //     const userData = { email, password };
-  //     apiClient.post("/auth/login", userData)
-  //       .then(res => {
-  //         console.log(res);
-  //         resolve(res.data.user); // Return the user object from the response
-  //       })
-  //       .catch(err => {
-  //         console.log(err);
-  //         const errorResponse = err.response;
-  //         if (errorResponse && errorResponse.status === 401) {
-  //           // Handle unauthorized (401) error here
-  //           reject("Invalid credentials");
-  //         } else {
-  //           reject("An error occurred during login");
-  //         }
-  //       });
-  //   });
-  // };
-  
 
 export const logoutUser = () => {
     return new Promise<void>((resolve, reject) => {

@@ -1,0 +1,26 @@
+.post-cont {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    margin: 30px auto;
+    max-width: 800px;
+  }
+  
+  .post2 {
+    width: calc(90% - 10px); /* Adjust as needed */
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .post2 h3 {
+    color: #333;
+    margin-top: 0;
+  }
+  
+  .post2 p {
+    color: #666;
+  }
+  

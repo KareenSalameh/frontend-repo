@@ -65,3 +65,9 @@
     border-radius: 5px;
     font-size: 16px;
 }
+.comment-count {
+    font-size: 14px;
+    color: #666; /* Adjust color as needed */
+    margin-top: 2px; /* Adjust spacing as needed */
+  }
+  
