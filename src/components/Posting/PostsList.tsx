@@ -1,14 +1,16 @@
 import { useEffect, useState } from 'react';
-import Post, { PostData } from './Post';
+import Post from './Post';
 import postService, { CanceledError } from '../../services/posts-service';
 import './PostsList.css';
+import {PostData} from '../../services/posts-service'
 
 
 function PostsList() {
     const [posts, setPosts] = useState<PostData[]>([]);
     const [error, setError] = useState<string | null>(null); 
+  
     useEffect(() => {
-        const { req, abort } = postService.getAllPosts();
+    const { req, abort } = postService.getAllPosts();
         req.then((res) => {
             setPosts(res.data);
         }).catch((err) => {

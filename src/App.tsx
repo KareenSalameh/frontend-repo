@@ -6,7 +6,8 @@ import Register from './components/Registeration/Register';
 import Profile from './components/Profile/Profile';
 import MyPosts from './components/Posting/MyPosts';
 import Login from '../src/components/Registeration/Login';
-//import PostComments from './components/PostComment';
+import PostComments from './components/PostComment';
+//import Parent from './components/ParentFetching';
 
 function App() {
   return (
@@ -16,10 +17,11 @@ function App() {
           <Route exact path='/' component={PostsListfunc} />
           <Route path='/register' component={Register} />
 
-          <Route path='/profile' component={Profile} />
+          <Route path='/profile' component={ProfilePage} />
 
           <Route path='/myposts' component={MyPosts} />
           <Route path='/login' component={Login} />
+          <Route path='/comments/:postId' component={PostComments} />
 
           {/* Add more routes here as needed */}
         </Switch>
@@ -33,6 +35,14 @@ function PostsListfunc() {
     <>
       <Navbar />
       <PostsList />
+    </>
+  );
+}
+function ProfilePage() {
+  return (
+    <>
+      <Navbar />
+      <Profile />
     </>
   );
 }

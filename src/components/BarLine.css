@@ -1,5 +1,44 @@
 .navbar-custom {
-    width: 1515px;
+    width: 1517px;
     margin-left: -110px;
+    justify-content: space-between; /* Align items at the start and end */
+    align-items: center; 
+    height: 112px;
+    
+  }
+
+  .form-control {
+    width: 300px; 
   }
   
+  .logout-link {
+    margin-left: 540px; 
+  }
+  
+  .nav-link svg {
+    margin: 3px;
+  }
+  .Travel {
+    margin-left: 20px;
+  }
+  
+  .search {
+    margin-left: 250px;
+  }
+  .title{
+    font-size: 40px !important;
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    font-weight: 700;
+    margin-left: 550px;
+  }
+  .username {
+    margin-top: -40px;
+    font-size: larger;
+    font-family:Arial, Helvetica, sans-serif;
+  }
+  .addpost{
+    width: 70px;
+    height: 60px;
+    margin-top: -5px;
+    
+  }

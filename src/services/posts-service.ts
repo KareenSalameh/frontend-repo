@@ -1,6 +1,17 @@
 import apiClient, { CanceledError } from "./api-client"
-import { PostData } from "../components/Posting/Post"
+import { Comment } from "./comment-service";
 
+export interface PostData {
+    title: string;
+    message: string;
+    _id?: string;
+    owner: {
+        name: string;
+        imgUrl: string;
+    };
+    postImg: string;
+    comment: [Comment];
+}
 
 export { CanceledError }
 const getAllPosts = () => {
@@ -9,19 +20,27 @@ const getAllPosts = () => {
     return { req, abort: () => abortController.abort() }
 
 }
-// export const getReviewById = (reviewId: string) => {
-//     return new Promise<Review>((resolve, reject) => {
-//       apiClient
-//         .get(`/reviews/id/${reviewId}`)
-//         .then((response) => {
-//           const review = response.data as Review;
-//           resolve(review);
-//         })
-//         .catch((error) => {
-//           reject(error);
-//         });
-//     });
-//   };
+const fetchPost = async () => {
+    try {
+        // Make an HTTP GET request to fetch post data
+        const response = await apiClient.get('/userpost/:id'); 
+        return response.data; // Assuming the response contains the post data
+    } catch (error) {
+        throw new Error('Failed to fetch post data');
+    }
+};
+export const getPostById = (postId: string) => {
+    return new Promise<PostData>((resolve, reject) => {
+      apiClient
+        .get(`/reviews/id/${postId}`)
+        .then((response) => {
+          const review = response.data as PostData;
+          resolve(review);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  };
 
-
-export default { getAllPosts }
+export default { getAllPosts, fetchPost }

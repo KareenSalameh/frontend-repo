@@ -31,12 +31,24 @@ function Login() {
 
     try {
       await loginUser(email, password);
+       // Retrieve existing user data from local storage
+   // const existingUserData = JSON.parse(localStorage.getItem('user') || '{}');
+
+    // Update email and password with the new values
+    // const updatedUserData = {
+    //   ...existingUserData,
+    //   email: email,
+    //   password: password
+    // };
+
+    // Store the updated user data back in local storage
+    //localStorage.setItem('user', JSON.stringify(res)); // Update local storage with user data
+
       history.push('/');
    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
       console.error("Login error:", error);
       if (error.response && error.response.status === 401) {
-        // Unauthorized: Incorrect credentials
         alert("Invalid email or password. Please try again.");
       } else {
         // Other errors

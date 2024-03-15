@@ -64,27 +64,51 @@ export const updateUser = (user: IUser) => {
     });
   };
 
-  export const loginUser = (email: string, password: string) => {
-    return new Promise<IUser>((resolve, reject) => {
-        console.log('Login');
-        const userData = { email, password };
-        apiClient.post("/auth/login", userData)
-            .then(res => {
-                console.log(res);
-                resolve(res.data);
-            })
-            .catch(err => {
-                console.log(err);
-                const errorResponse = err.response;
-                if (errorResponse && errorResponse.status === 401) {
-                    // Handle unauthorized (401) error here
-                    reject("Invalid credentials");
-                } else {
-                    reject("An error occurred during login");
-                }
-            });
-    });
+  // Update the loginUser function to return user data
+export const loginUser = (email: string, password: string) => {
+  return new Promise<IUser>((resolve, reject) => {
+      console.log('Login');
+      const userData = { email, password };
+      apiClient.post("/auth/login", userData)
+          .then(res => {
+              console.log(res);
+              resolve(res.data.user); // Return the user object from the response
+          })
+          .catch(err => {
+              console.log(err);
+              const errorResponse = err.response;
+              if (errorResponse && errorResponse.status === 401) {
+                  // Handle unauthorized (401) error here
+                  reject("Invalid credentials");
+              } else {
+                  reject("An error occurred during login");
+              }
+          });
+  });
 };
+
+  // export const loginUser = (email: string, password: string) => {
+  //   return new Promise<IUser>((resolve, reject) => {
+  //     console.log('Login');
+  //     const userData = { email, password };
+  //     apiClient.post("/auth/login", userData)
+  //       .then(res => {
+  //         console.log(res);
+  //         resolve(res.data.user); // Return the user object from the response
+  //       })
+  //       .catch(err => {
+  //         console.log(err);
+  //         const errorResponse = err.response;
+  //         if (errorResponse && errorResponse.status === 401) {
+  //           // Handle unauthorized (401) error here
+  //           reject("Invalid credentials");
+  //         } else {
+  //           reject("An error occurred during login");
+  //         }
+  //       });
+  //   });
+  // };
+  
 
 export const logoutUser = () => {
     return new Promise<void>((resolve, reject) => {
