@@ -55,7 +55,7 @@ const Navbar: React.FC = () => {
                 </Link>
               </li>
               <li className="nav-item">
-                <Link to="/" className={`nav-link ${location.pathname === "/" ? "active" : ""}`}>
+                <Link to="/map" className={`nav-link ${location.pathname === "/map" ? "active" : ""}`}>
                 <FaMap /> Maps {/* Add list icon */}
                 </Link>
               </li>

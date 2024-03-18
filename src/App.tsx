@@ -8,7 +8,8 @@ import MyPosts from './components/Posting/MyPosts';
 import Login from '../src/components/Registeration/Login';
 import PostComments from './components/PostComment';
 //import Parent from './components/ParentFetching';
-
+//API REST KEY : AIzaSyB6PHIIXJR7g0tPqyh7UFAu6D7Upe-9Ezc
+import Maps from '../src/components/Map/GoogleMaps';
 function App() {
   return (
     <div className="container">
@@ -22,6 +23,8 @@ function App() {
           <Route path='/myposts' component={MyPost} />
           <Route path='/login' component={Login} />
           <Route path='/comments/:postId' component={PostComments} />
+          <Route path='/map' component={Map} />
+
 
           {/* Add more routes here as needed */}
         </Switch>
@@ -51,6 +54,14 @@ function MyPost() {
     <>
       <Navbar />
       <MyPosts />
+    </>
+  );
+}
+function Map() {
+  return (
+    <>
+      <Navbar />
+      <Maps />
     </>
   );
 }
