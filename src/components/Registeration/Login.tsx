@@ -79,7 +79,7 @@ function Login() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      {emailError && <p className="error-message">{emailError}</p>}
+      {emailInputRef.current?.value && !emailInputRef.current.value.includes('@') && ( <p className="text-white">Invalid email</p>)}
       <input
         ref={passwordInputRef}
         type="password"
@@ -88,6 +88,8 @@ function Login() {
         value={password}
         onChange={(e) => setPassword(e.target.value)}
       />
+      {passwordInputRef.current?.value && passwordInputRef.current.value.length < 3 && passwordInputRef.current.value.length > 20 && 
+      (<p className="text-white">Password must be between 3 to 20 letters</p>)}
       {passwordError && <p className="error-message">{passwordError}</p>}
       <button type="button" className="login-button" onClick={handleLogin}>Login</button>
       <div className='google'>

@@ -100,8 +100,12 @@ function Register() {
       </div>
 
       <input ref={nameInputRef} type="text" className="register-input" placeholder="Full Name" />
+      {nameInputRef.current?.value && (nameInputRef.current.value.length < 2 || nameInputRef.current.value.length > 30 || !nameInputRef.current.value.includes(' ')) && (
+        <p className="text-white">Name must have 2 until 30 characters and contain space</p>)}
       <input ref={emailInputRef} type="email" className="register-input" placeholder="Email" />
+      {emailInputRef.current?.value && !emailInputRef.current.value.includes('@') && ( <p className="text-white">Invalid email</p>)}
       <input ref={passwordInputRef} type="password" className="register-input" placeholder="Password" />
+      {passwordInputRef.current?.value && (passwordInputRef.current.value.length < 4 || passwordInputRef.current.value.length > 20) && ( <p className="text-white">Password must have 4 until 20 characters</p>)}
       <button type="button" className="register-button" onClick={onRegister}>Register</button>
 
       <div className='google'>
