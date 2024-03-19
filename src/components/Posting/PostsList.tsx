@@ -32,7 +32,6 @@ function PostsList() {
 
     return (
         <div>
-
             {/* Posts List */}
             <div className="posts-container">
                 {posts.map((post, index) => (

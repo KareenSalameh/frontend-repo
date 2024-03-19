@@ -1,7 +1,8 @@
 import apiClient from './api-client';
+//import axios from 'axios';
+
 export interface Comment {
   id?: string;
-  title: string; 
   content: string;
   owner: {
     name: string;
@@ -12,6 +13,36 @@ export interface Comment {
 }
 
 
+export const getCommentsByPostId = async (postId: string) => {
+  try {
+    const response = await apiClient.get(`/comments/post/${postId}`);
+    console.log(response.data);
+    return response.data; 
+  } catch (error) {
+    throw new Error('Failed to fetch comments by post ID');
+  }
+
+  // return new Promise<Comment>((resolve, reject) => {
+  //   apiClient
+  //     .get(`/comments/${postId}`)
+  //     .then((response) => {
+  //       const review = response.data as Comment;
+  //       resolve(review);
+  //     })
+  //     .catch((error) => {
+  //       reject(error);
+  //     });
+  // });
+};
+//export const getCommentsForPost = async (postId: string): Promise<Comment[]> => {
+  //   try {
+  //     const response = await apiClient.get(`/comments/${postId}`);
+  //     return response.data;
+  //   } catch (error) {
+  //     console.error('Error fetching comments:', error);
+  //     throw error;
+  //   }
+  // };
 // Function to fetch comments by post ID
 // export const getCommentsByPostId = async (postId: string | number | undefined) => {
 //   try {
@@ -21,17 +52,38 @@ export interface Comment {
 //     throw new Error('Failed to fetch comments');
 //   }
 // };
-export const fetchComment = async (postId: string | number | undefined ) => {
+export const fetchComment = async (postId: string) => {
   try {
-      // Make an HTTP GET request to fetch post data
-      const response = await apiClient.get(`/comments/${postId}`); 
-      console.log(response.data);
+    const response = await apiClient.get(`/comments/${postId}`); 
+    console.log(response.data);
       return response.data; 
   } catch (error) {
-      throw new Error('Failed to fetch post data');
+      throw new Error('Failed to fetch  post data');
   }
 };
+export const getAllComments = () => {
+  const abortController = new AbortController()
+  const req = apiClient.get<Comment[]>('comments', {signal: abortController.signal})
+  return { req, abort: () => abortController.abort() }
 
+}
+export const createComment = (
+  comment: Pick<Comment, "content" | "postId" >
+) => {
+  return new Promise<void>((resolve, reject) => {
+    console.log("Creating comment...");
+    console.log(comment);
+    apiClient
+      .post(`/comments/`, comment)
+      .then(() => {
+        resolve();
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(error);
+      });
+  });
+};
 // export const getCommentsByPostId = async (postId: string | number | undefined) => {
 //   try {
 //     const response: AxiosResponse<Comment[]> = await axios.get(`/comments/${postId}`);

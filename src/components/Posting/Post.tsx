@@ -2,9 +2,8 @@ import { useEffect, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './Post.css';
 import apiClient from '../../services/api-client';
-//import { getCommentsByPostId } from '../../services/comment-service'; 
-//import PostComment from '../PostComment';
 import {PostData} from '../../services/posts-service'
+import { createComment, getCommentsByPostId} from '../../services/comment-service';
 export interface PostProps {
     post: PostData;
     onRemoveCbk: () => void;
@@ -12,6 +11,7 @@ export interface PostProps {
 const Post: React.FC<PostProps> = ({ post }) => {
     const history = useHistory();
     const [commentCount, setCommentCount] = useState<number>(0);
+    const [commentContent, setCommentContent] = useState('');
 
 
     const handleShowComments = async () => {
@@ -19,31 +19,65 @@ const Post: React.FC<PostProps> = ({ post }) => {
             console.error('Post ID is undefined');
             return;
           }
-        
           try {
-           // const comments = await getCommentsByPostId(post._id); 
-           // console.log('Comments:', comments);
-            history.push(`/comments/${post._id}`, {post});
+            const postId = post._id;
+            const comments = await getCommentsByPostId(postId);
+            console.log('Comments:', comments);
+            history.push(`/comments/${postId}`);
+            // Do something with the fetched comments
           } catch (error) {
             console.error('Failed to fetch comments:', error);
           }
     };
-    const handleAddComment = () => {
-        // Navigate to the comment submission page, passing the post ID as a parameter
-        //history.push(`/add-comment/${post._id}`);
+    const handleAddComment = async () => {
+        try {
+            setCommentCount(commentCount + 1);
+
+            const newComment = {
+                content: "commentContent",
+                postId: post._id || '', 
+                owner: {
+                    name: 'Anonymous',
+                    imgUrl: 'https://via.placeholder.com/150', 
+                },
+                createdAt: 
+                new Date(),
+            };
+
+            await createComment(newComment);
+            //setCommentContent('');
+
+        } catch (error) {
+            console.error('Failed to add comment:', error);
+        }
     };
+    const handleCommentInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setCommentContent(event.target.value);
+    };
+    
+
     useEffect(() => {
         const fetchCommentCount = async () => {
             try {
-                const response = await apiClient.get(`/comments/count/${post._id}`);
-                setCommentCount(response.data.count);
+                // Check if the comment count is stored in localStorage
+                const storedCommentCount = localStorage.getItem(`commentCount_${post._id}`);
+                if (storedCommentCount) {
+                    setCommentCount(parseInt(storedCommentCount));
+                } else {
+                    const response = await apiClient.get(`/comments/count/${post._id}`);
+                    const count = response.data.count;
+                    setCommentCount(count);
+                    
+                    // Store the fetched comment count in localStorage
+                    localStorage.setItem(`commentCount_${post._id}`, count.toString());
+                }
             } catch (error) {
                 console.error('Error fetching comment count:', error);
             }
         };
         fetchCommentCount();
     }, [post._id]);
-
+    
     return (
         <div className="post-container">
             <h1 className="post-title">{post.title}</h1>
@@ -54,14 +88,14 @@ const Post: React.FC<PostProps> = ({ post }) => {
            
         </div>
             <div className="button-container">
-            <input type="text" className="comment-input" placeholder="Write here your comment.." />
+            <input type="text" className="comment-input" placeholder="Write here your comment.." value={commentContent} 
+    onChange={handleCommentInputChange}  />
                 <button type="button" className="btn btn-primary" onClick={handleAddComment}>Add Comment</button>
                 <button type="button" className="btn btn-primary" onClick={handleShowComments}>Show All Comments</button>
             </div>
         </div>
     );
 }
-//<PostComment post={post} />
 
 export default Post;
 

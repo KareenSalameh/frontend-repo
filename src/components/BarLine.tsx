@@ -70,6 +70,8 @@ const Navbar: React.FC = () => {
               Logout
             </Link>
           </div>
+          <button type="button" className="btn btn-primary add-btn" onClick={() => {window.location.href = '/add-post';}}>Add Post</button>
+
         </div>
       </nav>
     </>

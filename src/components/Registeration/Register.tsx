@@ -28,24 +28,46 @@ function Register() {
     const url = await uploadPhoto(ImgSrc!);
     console.log("upload returned: " + url);
     if (nameInputRef.current?.value && emailInputRef.current?.value &&
-      passwordInputRef.current?.value) {
-      const user: IUser = {
-        name: nameInputRef.current?.value,
-        email: emailInputRef.current?.value,
-        password: passwordInputRef.current?.value,
-        imgUrl: url
-      }; 
-      try {
-      const res = await registerUser(user);
-      console.log(res);
-      localStorage.setItem('user', JSON.stringify({ id: user._id, name: user.name , imgUrl: user.imgUrl, email: user.email }));
-      // Redirect to login page after successful registration
-      history.push('/login');
-      } catch (e) {
-        console.log("Registeration error",e);
-      }
+        passwordInputRef.current?.value) {
+        const user: IUser = {
+            name: nameInputRef.current?.value,
+            email: emailInputRef.current?.value,
+            password: passwordInputRef.current?.value,
+            imgUrl: url
+        };
+        try {
+            await registerUser(user)
+                .then(res => {
+                    if (res) {
+                        const userId = res._id; 
+                        const access = res.accessToken;
+                        const refresh = res.refreshToken;
+                        console.log("User registered with ID:", userId);
+                        console.log("User registered with access:", access);
+                        console.log("User registered with refresh:", refresh);
+
+                        localStorage.setItem('userId', userId as string);
+                        localStorage.setItem('access', access as string);
+                        localStorage.setItem('refresh', refresh as string);
+
+                        user._id = userId;
+                    } else {
+                        console.error("Error registering user: Response is undefined");
+                    }
+                })
+                .catch(err => {
+                    console.error("Error registering user:", err);
+                });
+            localStorage.setItem('user', JSON.stringify(user));
+            history.push('/login');
+        } catch (e) {
+            console.log("Registration error", e);
+        }
     }
-  };
+};
+
+
+
 
   const selectImg = () => {
     console.log('Select Img');

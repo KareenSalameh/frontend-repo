@@ -1,5 +1,8 @@
 import React, { useState } from 'react';
 import './Profile.css'; // Import the CSS file
+import { Link } from 'react-router-dom';
+import { update } from '../../services/user-service';
+
 const Profile: React.FC = () => {
   // Retrieve user details from local storage
   const storedUser = JSON.parse(localStorage.getItem('user') || '{}');
@@ -7,6 +10,7 @@ const Profile: React.FC = () => {
   const [editMode, setEditMode] = useState(false);
   const [name, setName] = useState(user.name);
   const [email, setEmail] = useState(user.email);
+  const [imgUrl, setImgUrl] = useState(user.imgUrl);
 
   const handleEdit = () => {
     setEditMode(true);
@@ -14,16 +18,27 @@ const Profile: React.FC = () => {
 
   const handleCancel = () => {
     setEditMode(false);
-    setName(user.name); // Reset name to the original value
-    setEmail(user.email); // Reset email to the original value
+    setName(user.name); 
+    setEmail(user.email);
+    setImgUrl(user.imgUrl);
   };
 
   const handleSubmit = () => {
-    //await updateUser({ ...user, name, email });
-    // Update user details in local storage and exit edit mode
-    localStorage.setItem('user', JSON.stringify({ ...user, name, email }));
-    setUser({ ...user, name, email });
+    localStorage.setItem('user', JSON.stringify({ ...user, name, email, imgUrl }));
+    setUser({ ...user, name, email, imgUrl });
+    update(user)
     setEditMode(false);
+  };
+
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files && e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = () => {
+        setImgUrl(reader.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
   };
 
   return (
@@ -32,29 +47,36 @@ const Profile: React.FC = () => {
       <div className="profile-details">
         {editMode ? (
           <div>
-            <label>Name:</label>
-            <input
-              type="text"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-            />
-            <label>Email:</label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-            />
-          </div>
+          <label className='form-label'>Name:</label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+          <label className='form-label'>Email:</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+          <label className='form-label'>Profile Photo:</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={handleImageChange}
+          />
+        </div>
+        
         ) : (
           <div>
             <p>Name: {user.name}</p>
             <p>Email: {user.email}</p>
-            {user.imgUrl && <img src={user.imgUrl} alt="Profile Image" className="profile-image" />}
+            {user.imgUrl && <img src={user.imgUrl} alt="Profile" className="profile-image" />}
           </div>
         )}
       </div>
       {editMode ? (
-        <div className="profile-actions">
+        <div className="profile-actions1">
           <button onClick={handleSubmit}>Save</button>
           <button onClick={handleCancel}>Cancel</button>
         </div>
@@ -64,12 +86,11 @@ const Profile: React.FC = () => {
         </div>
       )}
       <div className="back-link">
-        <a href="/">Back</a>
+      <Link to="/" className={`nav-link ${location.pathname === "/" ? "active" : ""}`}> Back
+       </Link>
       </div>
     </div>
   );
 };
 
 export default Profile;
-
-

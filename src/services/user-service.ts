@@ -1,6 +1,5 @@
 import { CredentialResponse } from "@react-oauth/google";
 import apiClient from "./api-client";
-import axios from 'axios';
 
 export interface IUser{
     name: string,
@@ -11,7 +10,7 @@ export interface IUser{
     accessToken?: string,
     refreshToken?: string
   }
-export const registerUser = (user:IUser) => {
+  export const registerUser = (user:IUser) => {
     return new Promise<IUser>((resolve, reject) => {
         console.log('Register');
         console.log(user);
@@ -51,27 +50,10 @@ export const getUserData = () => {
     });
   }; 
 
-// export const updateUser = (user: IUser) => {
-//     return new Promise<void>((resolve, reject) => {
-//       apiClient
-//         .put(`/user/${user._id}`, user)
-//         .then(() => {
-//           resolve();
-//         })
-//         .catch((error) => {
-//           console.log(error);
-//           reject(error);
-//         });
-//     });
-//   };
-export const updateUser = (user: IUser, authToken: string) => {
+export const update = (user: IUser) => {
   return new Promise<void>((resolve, reject) => {
-    axios
-      .put(`/user/${user._id}`, user, {
-        headers: {
-          Authorization: `Bearer ${authToken}` // Include the authentication token in the request headers
-        }
-      })
+    apiClient
+      .put(`/user/${user._id}`,user)
       .then(() => {
         resolve();
       })
@@ -81,8 +63,6 @@ export const updateUser = (user: IUser, authToken: string) => {
       });
   });
 };
-
-  // Update the loginUser function to return user data
 export const loginUser = (email: string, password: string) => {
   return new Promise<IUser>((resolve, reject) => {
       console.log('Login');
@@ -90,8 +70,8 @@ export const loginUser = (email: string, password: string) => {
       apiClient.post("/auth/login", userData)
           .then(res => {
               console.log(res);
-              resolve(res.data.user); // Return the user object from the response
-          })
+              resolve(res.data)
+            })
           .catch(err => {
               console.log(err);
               const errorResponse = err.response;

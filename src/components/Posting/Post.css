@@ -4,8 +4,8 @@
     border-radius: 20px;
     box-shadow: 0 5px 8px rgba(0, 0, 0, 0.1);
     margin: 20px;
-    flex: 0 0 calc(25% - 10px); 
-    max-width: calc(25% - 10px); 
+    flex: 0 0 calc(35% - 10px); 
+    max-width: calc(35% - 10px); 
     display: inline-block;
     vertical-align: top; 
     margin-top: 20px;

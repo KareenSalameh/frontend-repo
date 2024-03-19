@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { PostData } from '../services/posts-service';
-import { Comment, fetchComment } from '../services/comment-service';
+import { Comment, getCommentsByPostId } from '../services/comment-service';
 
 interface PostCommentProps {
     location: {
@@ -18,7 +18,7 @@ const PostComment: React.FC<PostCommentProps> = ({ location }) => {
         
         const fetch = async () => {
             try {
-                const commentsData = await fetchComment(post._id); 
+                const commentsData = await getCommentsByPostId(post._id || ''); 
                 console.log('Comments data:', commentsData); // Log the comments data
                 setComments(commentsData); 
             } catch (error) {
@@ -36,7 +36,6 @@ const PostComment: React.FC<PostCommentProps> = ({ location }) => {
             <h2>Comments for Post {post._id}</h2>
             {comments.map((comment, index) => ( // Mapping over comments array
                 <div key={index}>
-                    <p>Title: {comment.title}</p>
                     <p>Content: {comment.content}</p>
                     <p>Owner: {comment.owner.name}</p>
                 </div>

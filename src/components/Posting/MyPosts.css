@@ -1,26 +1,72 @@
-.post-cont {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
-    margin: 30px auto;
-    max-width: 800px;
-  }
-  
-  .post2 {
-    width: calc(90% - 10px); /* Adjust as needed */
-    background-color: #f9f9f9;
-    border-radius: 8px;
-    padding: 20px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
-  
-  .post2 h3 {
-    color: #333;
-    margin-top: 0;
-  }
-  
-  .post2 p {
-    color: #666;
-  }
-  
+/* MyPosts.css */
+
+/* Container for the entire component */
+.my-posts-container {
+  margin: 20px;
+}
+
+/* Style for each individual post */
+.my-post-container {
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  padding: 10px;
+  margin-bottom: 10px;
+  width: 800px;
+  margin-left: 150px;
+}
+
+/* Title style */
+.my-post-title {
+  font-size: 1.2rem;
+  margin-bottom: 5px;
+  color: #fff;
+
+}
+
+/* Text style */
+.my-post-text {
+  margin-bottom: 10px;
+  margin-top: 20px;
+
+}
+
+/* Image style */
+.my-post-image {
+  max-width: 40%;
+  height: auto;
+  margin-bottom: 10px;
+  margin-top: 20px;
+}
+
+/* Button style */
+.my-post-button {
+  margin-left: 20px;
+  cursor: pointer;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 10px;
+}
+
+.my-post-button:hover {
+  background-color: #0056b3;
+}
+
+/* Edit button */
+.my-edit-button {
+  background-color: #28a745;
+}
+
+.my-edit-button:hover {
+  background-color: #218838;
+}
+
+/* Delete button */
+.my-delete-button {
+  background-color: #dc3545;
+}
+
+.my-delete-button:hover {
+  background-color: #c82333;
+}

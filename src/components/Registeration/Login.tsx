@@ -18,32 +18,30 @@ function Login() {
   const handleLogin = async () => {
     setEmailError("");
     setPasswordError("");
-
+  
     if (!validateEmail(email)) {
       setEmailError("Please enter a valid email address.");
       return;
     }
-
+  
     if (password.length < 3) {
       setPasswordError("Password must be at least 3 characters long.");
       return;
     }
-
+  
     try {
       await loginUser(email, password);
-      
-   // const existingUserData = JSON.parse(localStorage.getItem('user') || '{}');
-
-    // Update email and password with the new values
-    // const updatedUserData = {
-    //   ...existingUserData,
-    //   email: email,
-    //   password: password
-    // };
-
-    // Store the updated user data back in local storage
-    //localStorage.setItem('user', JSON.stringify(res)); // Update local storage with user data
-
+      // console.log("User data:", user);
+      // console.log("name" , user.name)
+      // if (user && user._id) {
+      //   const userId = user._id;
+      //   console.log("User registered with ID:", userId);
+      //   localStorage.setItem('name', user.name);
+      //   localStorage.setItem('user', JSON.stringify(user));
+      // } else {
+      //   console.error("Error Login user: User or user ID is undefined");
+      // }
+  
       history.push('/');
    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     } catch (error: any) {
