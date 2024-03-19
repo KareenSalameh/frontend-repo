@@ -75,6 +75,7 @@ function MyPosts() {
             </ul>
         </div>
     );
+
 }
 
 export default MyPosts;

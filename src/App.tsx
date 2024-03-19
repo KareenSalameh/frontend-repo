@@ -11,6 +11,7 @@ import PostComments from './components/PostComment';
 //API REST KEY : AIzaSyAc15uVFtPpV0T8gBJIJm8gmMnfiSg3alA
 import Maps from '../src/components/Map/GoogleMaps';
 import AddPost from './components/Posting/AddPost';
+import OpenWeather from './components/Weather/OpenWeather';
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           <Route path='/comments/:postId' component={PostComments} />
           <Route path='/map' component={Map} />
           <Route path='/add-post' component={AddMyPost} />
+          <Route path='/weather' component={OpenWeather} />
 
 
           {/* Add more routes here as needed */}
@@ -74,6 +76,15 @@ function AddMyPost(){
     <>
       <Navbar />
       <AddPost />
+    </>
+  );
+}
+
+function Weather(){
+  return(
+    <>
+      <Navbar />
+      <Weather />
     </>
   );
 }
