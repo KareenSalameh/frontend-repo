@@ -2,10 +2,10 @@ import { CredentialResponse } from "@react-oauth/google";
 import apiClient from "./api-client";
 
 export interface IUser{
-    name: string,
+    name?: string,
     email: string,
     password: string,
-    imgUrl: string,
+    imgUrl?: string,
     _id?:string,
     accessToken?: string,
     refreshToken?: string
@@ -27,7 +27,7 @@ export interface IUser{
 export const GoogleSignin = (credentialResponse: CredentialResponse) => {
     return new Promise<IUser>((resolve, reject) => {
         console.log('Google sign in');
-        apiClient.post("/auth/google", credentialResponse).then(res => {
+        apiClient.post("/auth/google", credentialResponse).then((res) => {
             console.log(res);
             resolve(res.data)
         }).catch((err)=>{
@@ -63,11 +63,11 @@ export const update = (user: IUser) => {
       });
   });
 };
-export const loginUser = (email: string, password: string) => {
+export const loginUser = (user:IUser) => {
   return new Promise<IUser>((resolve, reject) => {
       console.log('Login');
-      const userData = { email, password };
-      apiClient.post("/auth/login", userData)
+      //const userData = { email, password };
+      apiClient.post("/auth/login", user)
           .then(res => {
               console.log(res);
               resolve(res.data)

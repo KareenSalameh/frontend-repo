@@ -30,7 +30,7 @@ function Login() {
     }
   
     try {
-      await loginUser(email, password);
+      await loginUser({email, password});
       // console.log("User data:", user);
       // console.log("name" , user.name)
       // if (user && user._id) {

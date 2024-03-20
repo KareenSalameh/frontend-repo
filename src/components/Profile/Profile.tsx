@@ -13,7 +13,7 @@ const Profile: React.FC = () => {
   const [imgUrl, setImgUrl] = useState(user.imgUrl);
 
   const handleEdit = () => {
-    setEditMode(true);
+    setEditMode(true);  
   };
 
   const handleCancel = () => {
@@ -23,11 +23,12 @@ const Profile: React.FC = () => {
     setImgUrl(user.imgUrl);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     localStorage.setItem('user', JSON.stringify({ ...user, name, email, imgUrl }));
     setUser({ ...user, name, email, imgUrl });
-    update(user)
     setEditMode(false);
+    await update(user)
+    setUser(user)
   };
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,6 +41,7 @@ const Profile: React.FC = () => {
       reader.readAsDataURL(file);
     }
   };
+  
 
   return (
     <div className="profile-container">
@@ -83,6 +85,7 @@ const Profile: React.FC = () => {
       ) : (
         <div className="profile-actions">
           <button onClick={handleEdit}>Edit</button>
+
         </div>
       )}
       <div className="back-link">

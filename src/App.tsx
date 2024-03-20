@@ -1,17 +1,18 @@
 import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
-import Navbar from '../src/components/BarLine';
+import Navbar from './components/NavBarLine/BarLine';
 import PostsList from './components/Posting/PostsList';
 import Register from './components/Registeration/Register';
 //import test from '../src/components/test';
 import Profile from './components/Profile/Profile';
 import MyPosts from './components/Posting/MyPosts';
 import Login from '../src/components/Registeration/Login';
-import PostComments from './components/PostComment';
+import PostComments from './components/Comments/PostComment';
 //import Parent from './components/ParentFetching';
 //API REST KEY : AIzaSyAc15uVFtPpV0T8gBJIJm8gmMnfiSg3alA
 import Maps from '../src/components/Map/GoogleMaps';
 import AddPost from './components/Posting/AddPost';
-
+import OpenWeather from './components/Weather/OpenWeather';
+import rain from './components/Weather/Rain';
 function App() {
   return (
     <div className="container">
@@ -24,9 +25,11 @@ function App() {
 
           <Route path='/myposts' component={MyPost} />
           <Route path='/login' component={Login} />
-          <Route path='/comments/:postId' component={PostComments} />
+          <Route path='/userpost/:postId' component={PostComments2} />
           <Route path='/map' component={Map} />
           <Route path='/add-post' component={AddMyPost} />
+          <Route path='/weather' component={OpenWeather2} />
+          <Route path='/rain' component={rain} />
 
 
           {/* Add more routes here as needed */}
@@ -69,11 +72,47 @@ function Map() {
   );
 }
 
+function OpenWeather2() {
+  return (
+    <>
+      <Navbar />
+      <OpenWeather/>
+    </>
+  );
+}
+
 function AddMyPost(){
   return(
     <>
       <Navbar />
       <AddPost />
+    </>
+  );
+}
+function PostComments2(){
+  return(
+    <>
+      <Navbar />
+      <PostComments location={{
+        state: {
+          post: 
+          {
+            title: '',
+            message: '',
+            owner: ' ',
+            postImg: '',
+            comments: [{
+              postId: '123',
+              content: 'This is a sample comment',
+              owner: {
+                name: 'Anonymous',
+                imgUrl: 'https://via.placeholder.com/150',
+              },
+              createdAt: new Date(),
+            }]
+          }
+        }
+      }} />
     </>
   );
 }

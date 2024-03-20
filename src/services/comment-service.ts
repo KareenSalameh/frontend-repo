@@ -12,10 +12,26 @@ export interface Comment {
   postId: string;
 }
 
-
+export const createComment = (
+  comment: Pick<Comment, "content" | "postId" | "createdAt" | "owner">
+) => {
+  return new Promise<void>((resolve, reject) => {
+    console.log("Creating comment...");
+    console.log(comment);
+    apiClient
+      .post(`/comments/`, comment)
+      .then(() => {
+        resolve();
+      })
+      .catch((error) => {
+        console.log(error);
+        reject(error);
+      });
+  });
+};
 export const getCommentsByPostId = async (postId: string) => {
   try {
-    const response = await apiClient.get(`/comments/post/${postId}`);
+    const response = await apiClient.get(`/userpost/${postId}`);
     console.log(response.data);
     return response.data; 
   } catch (error) {
@@ -67,23 +83,7 @@ export const getAllComments = () => {
   return { req, abort: () => abortController.abort() }
 
 }
-export const createComment = (
-  comment: Pick<Comment, "content" | "postId" >
-) => {
-  return new Promise<void>((resolve, reject) => {
-    console.log("Creating comment...");
-    console.log(comment);
-    apiClient
-      .post(`/comments/`, comment)
-      .then(() => {
-        resolve();
-      })
-      .catch((error) => {
-        console.log(error);
-        reject(error);
-      });
-  });
-};
+
 // export const getCommentsByPostId = async (postId: string | number | undefined) => {
 //   try {
 //     const response: AxiosResponse<Comment[]> = await axios.get(`/comments/${postId}`);

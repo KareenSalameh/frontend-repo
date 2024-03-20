@@ -2,15 +2,16 @@ import apiClient, { CanceledError } from "./api-client"
 import { Comment } from "./comment-service";
 
 export interface PostDescription {
+  _id?: string;
   title: string;
   message: string;
   postImg: string;
   owner? : string;
-  comments: [Comment];
+  comments?: [Comment];
   
 }
 
-export interface PostData {
+export interface PostData extends PostDescription{
     title: string;
     message: string;
     _id?: string;
@@ -26,27 +27,7 @@ export { CanceledError }
     return { req, abort: () => abortController.abort() }
 
 }
-export const getConnectedUserReviews = () => {
-  return new Promise<PostData[]>((resolve, reject) => {
-    apiClient
-      .get(`/userpost/connectedUser`)
-      .then((response) => {
-        const reviews = response.data as PostData[];
-        resolve(reviews);
-      })
-      .catch((error) => {
-        reject(error);
-      });
-  });
-};
-const fetchPost = async () => {
-    try {
-        const response = await apiClient.get('/userpost/:id'); 
-        return response.data; // Assuming the response contains the post data
-    } catch (error) {
-        throw new Error('Failed to fetch post data');
-    }
-};
+
  export const getPostById = (postId: string) => {
     return new Promise<PostData>((resolve, reject) => {
       apiClient
@@ -61,20 +42,8 @@ const fetchPost = async () => {
     });
   };
 
-  // export const getConnectedUserPosts = (userId: string) => {
-  //   return new Promise<PostData[]>((resolve, reject) => {
-  //     apiClient
-  //       .get(`/userpost/userId/${userId}`) 
-  //       .then((response) => {
-  //         const posts = response.data as PostData[];
-  //         resolve(posts);
-  //       })
-  //       .catch((error) => {
-  //         reject(error);
-  //       });
-  //   });
-  // };
-  export const getConnectedUserPosts = (userId: string) => {
+ 
+  export const getConnectedUserPosts = (userId:string) => {
     return new Promise<PostData[]>((resolve, reject) => {
         apiClient
             .get(`/userpost/userId/${userId}`)
@@ -92,11 +61,14 @@ export const createPost = (post: PostDescription) => {
     return new Promise<void>((resolve, reject) => {
       console.log("Creating post...", post);
       apiClient
-        .post("/userpost/", post)
-        .then(res => {
-          console.log(res);
-          resolve(res.data)
+        .post("/userpost", post)
+        .then(() => {
+          resolve();
         })
+        // .then(res => {
+        //   console.log(res);
+        //   resolve(res.data)
+        // })
         .catch((error) => {
           console.log(error);
           reject(error);
@@ -134,4 +106,4 @@ export const createPost = (post: PostDescription) => {
     });
   };
 
-export default { getAllPosts, fetchPost, createPost }
+export default { getAllPosts, createPost }

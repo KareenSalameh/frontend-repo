@@ -1,12 +1,12 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
-import { FaHome, FaUser, FaSearch, FaList, FaMap } from "react-icons/fa"; // Import icons from react-icons
+import { FaHome, FaUser, FaSearch, FaList, FaCloudRain} from "react-icons/fa"; // Import icons from react-icons
 import './BarLine.css'
 
 const Navbar: React.FC = () => {
   const location = useLocation();
-  const [user, setUser] = useState<{ name: string, img: string, email:string } | null>(null);
+  const [user, setUser] = useState<{ name: string, imgUrl: string, email:string } | null>(null);
 
   useEffect(() => {
     const storedUser = localStorage.getItem('user');
@@ -25,7 +25,8 @@ const Navbar: React.FC = () => {
             Welcome To TraveIL
           </Link>
           <div className="username">
-            {user && <p>Hello, {user.name}, {user.img}</p>}
+            {user && <p>Hello, {user.name}</p>} 
+            {/* //{user.imgUrl} */}
             </div>
           <button
             className="navbar-toggler"
@@ -54,9 +55,10 @@ const Navbar: React.FC = () => {
                 <FaList /> My Posts {/* Add list icon */}
                 </Link>
               </li>
+            
               <li className="nav-item">
-                <Link to="/map" className={`nav-link ${location.pathname === "/map" ? "active" : ""}`}>
-                <FaMap /> Maps {/* Add list icon */}
+                <Link to="/weather" className={`nav-link ${location.pathname === "/weather" ? "active" : ""}`}>
+                <FaCloudRain /> Weather {/* Add list icon */}
                 </Link>
               </li>
             </ul>

@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import { PostData } from '../services/posts-service';
-import { Comment, getCommentsByPostId } from '../services/comment-service';
-
+import { PostData } from '../../services/posts-service';
+import { Comment } from '../../services/comment-service';
+import { useParams } from "react-router-dom";
+import {getPostById} from '../../services/posts-service';
+import './PostComment.css';
 interface PostCommentProps {
     location: {
         state: {
@@ -10,36 +12,43 @@ interface PostCommentProps {
     };
 }
 
-const PostComment: React.FC<PostCommentProps> = ({ location }) => {
-    const { post } = location.state;
-    const [comments, setComments] = useState<Comment[]>([]); // Initializing comments as an empty array
+const PostComment: React.FC<PostCommentProps> = () => {
+//    const { post } = location.state;
+const { postId } = useParams<{ postId: string }>();
 
-    useEffect(() => {
-        
-        const fetch = async () => {
-            try {
-                const commentsData = await getCommentsByPostId(post._id || ''); 
-                console.log('Comments data:', commentsData); // Log the comments data
-                setComments(commentsData); 
-            } catch (error) {
-                console.error('Failed to fetch comments1:', error); 
-            }
-        };
+    const [comments, setComments] = useState<PostData | null>(null); // Initializing comments as an empty array
+    const fetchPost = async () => {
+        try {
+          if (postId !== undefined) {
+            const comments = await getPostById(postId);
+            setComments(comments);
+          }
+        } catch (error) {
+          console.error("Error fetching comments:", error);
+        }
+      };
+      useEffect(() => {
+        fetchPost();
+      }, []);
 
-        fetch(); 
-
-    }, [post._id]); 
-
-    // Rendering the comments
     return (
-        <div>
-            <h2>Comments for Post {post._id}</h2>
-            {comments.map((comment, index) => ( // Mapping over comments array
-                <div key={index}>
-                    <p>Content: {comment.content}</p>
-                    <p>Owner: {comment.owner.name}</p>
-                </div>
-            ))}
+    <div className="container">
+            <h2>Comments for Post {postId}</h2>
+            {comments === null ? (
+                <p>Loading comments...</p>
+            ) : (
+                <ul className="comments-list">
+                {comments.comments.map((comment: Comment) => (
+                        <li className="comment" key={comment.id}>
+                        <div className="author">
+                            <span>{comment.owner.name}</span>
+                            <img src={comment.owner.imgUrl} alt="Profile" />
+                            </div>
+                    <p className="content">{comment.content}</p>
+                    </li>
+                    ))}
+                </ul>
+            )}
         </div>
     );
 };
