@@ -71,3 +71,11 @@
 .my-delete-button:hover {
   background-color: #c82333;
 }
+
+.noPost{
+  margin-left: 450px;
+  margin-top: 250px;
+  font-size: 30px;
+  font-weight: bold;
+  color: #fff;
+}

@@ -1,41 +1,52 @@
-/* PostComment.css */
+/* Comments container styling */
+.comments-container {
+  max-width: 700px;
+  margin: 20px auto 0; /* Adjust the top margin to move the comments section down */
+  padding: 20px;
+  background-color: aliceblue;
+}
 
-/* Container styling */
-.container {
-    max-width: 800px;
-    margin: 0 auto;
-    padding: 20px;
-  }
-  
-  /* Comments list styling */
-  .comments-list {
-    list-style: none;
-    padding: 0;
-  }
-  
-  /* Individual comment styling */
-  .comment {
-    border: 1px solid #ddd;
-    margin-bottom: 20px;
-    padding: 10px;
-  }
-  
-  .comment p {
-    margin: 5px 0;
-  }
-  
-  .comment .content {
-    font-size: 16px;
-  }
-  
-  .comment .author {
-    font-weight: bold;
-  }
-  
-  .comment .author img {
-    width: 40px; /* Adjust as needed */
-    height: 40px; /* Adjust as needed */
-    border-radius: 50%; /* Make the image circular */
-    margin-right: 10px;
-  }
-  
+/* Comments list styling */
+.comments-list {
+  list-style: none;
+  padding: 0;
+}
+
+/* Individual comment styling */
+.comment {
+  border: 1px solid #ddd;
+  padding: 10px;
+  display: flex;
+  align-items: flex-start;
+}
+
+.comment p {
+  margin: 5px 0;
+}
+
+.comment .content {
+  font-size: 18px;
+  color: #333;
+  margin-left: 20px;
+  margin-top: 27px;
+}
+
+.comment .author {
+  font-weight: bold;
+  margin-top: 20px;
+}
+
+.comment .author img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.time {
+  margin-left: -30px !important;
+  font-size: 15px;
+  color: #868282;
+  margin-top: -10px !important;
+  font-weight: bold;
+}

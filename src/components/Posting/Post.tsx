@@ -1,19 +1,29 @@
 import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './Post.css';
-import apiClient from '../../services/api-client';
+//import apiClient from '../../services/api-client';
 import { PostData } from '../../services/posts-service';
-import { createComment, getCommentsByPostId } from '../../services/comment-service';
+import {   CommentCount,UpdateCommentCount } from '../../services/comment-service';
+import apiClient from '../../services/api-client';
 
 interface PostProps {
     post: PostData;
     onRemoveCbk: () => void;
 }
-
+interface Comment {
+    content: string;
+    postId: string;
+    owner: {
+        name: string;
+        imgUrl: string;
+    };
+    createdAt: Date;
+}
 const Post: React.FC<PostProps> = ({ post }) => {
     const history = useHistory();
     const [commentCount, setCommentCount] = useState<number>(0);
     const commentContent = useRef<HTMLTextAreaElement>(null); 
+    const [comments, setComments] = useState<Comment[]>([]); // State to store comments
 
     const handleShowComments = async () => {
         if (!post._id) {
@@ -22,9 +32,15 @@ const Post: React.FC<PostProps> = ({ post }) => {
         }
         try {
             const postId = post._id;
-            const comments = await getCommentsByPostId(postId);
-            console.log('Comments:', comments);
-            history.push(`/userpost/${postId}`);
+            const comments: Comment[] = JSON.parse(localStorage.getItem('comments') || '[]');
+            const postComments = comments.filter(comment => comment.postId === postId);
+            console.log('postComments:', postComments);
+            setComments(postComments); 
+            history.push(`/userpost/${postId}`, { comments: postComments });
+            // const postId = post._id;
+           // const commento = await getCommentsByPostId(postId);
+
+           // history.push(`/userpost/${postId}`);
             // Do something with the fetched comments
         } catch (error) {
             console.error('Failed to fetch comments:', error);
@@ -33,20 +49,34 @@ const Post: React.FC<PostProps> = ({ post }) => {
 
     const handleAddComment = async () => {
         if (commentContent.current?.value.trim() !== "") {
-            try {
-                setCommentCount(prevCount => prevCount + 1);
-                commentContent.current!.value = "";
+            try {                
 
-                await createComment({
+                const user = JSON.parse(localStorage.getItem('user') || '{}'); // Retrieve user details from local storage
+    
+                const comment = {
                     content: commentContent.current!.value.trim(),
                     postId: post._id!,
                     owner: {
-                        name: "Anonymous",
-                        imgUrl: "https://via.placeholder.com/150",
+                        name: user.name,
+                        imgUrl: user.imgUrl,
                     },
                     createdAt: new Date(),
-                });
-                
+                };
+    
+                // Add the new comment to local storage
+                const storedComments = JSON.parse(localStorage.getItem('comments') || '[]');
+                const updatedComments = [...storedComments, comment];
+                localStorage.setItem('comments', JSON.stringify(updatedComments));
+
+                setCommentCount(prevCount => prevCount + 1);
+    
+                // Update the comment count in the backend
+                const updatedCount = commentCount + 1;
+                await UpdateCommentCount(post._id!, updatedCount);
+                await apiClient.put(`/comments/count/${post._id}`, { count: updatedCount });
+                commentContent.current!.value = "";
+
+                console.log(CommentCount)
             } catch (err) {
                 console.log(err);
             }
@@ -60,10 +90,10 @@ const Post: React.FC<PostProps> = ({ post }) => {
                 if (storedCommentCount) {
                     setCommentCount(parseInt(storedCommentCount));
                 } else {
-                    const response = await apiClient.get(`/comments/count/${post._id}`);
-                    const count = response.data.count;
+                    const count = await CommentCount(post._id ?? '');
                     setCommentCount(count);
                     localStorage.setItem(`commentCount_${post._id}`, count.toString());
+    
                 }
             } catch (error) {
                 console.error('Error fetching comment count:', error);
@@ -79,6 +109,14 @@ const Post: React.FC<PostProps> = ({ post }) => {
             <img src={post.postImg} alt="Post" className="post-image" />
             <p className="comment-count">Comments: {commentCount}</p>
             <div className="comments-container"></div>
+            {/* Render comments here */}
+            {comments.map((comment, index) => (
+                <div key={index} className="comment">
+                    <p>{comment.content || 'No content available'}</p>
+                    <p>By: {comment.owner?.name || 'Anonymous'}</p>
+                </div>
+            ))}
+
             <div className="button-container">
                 {/* Use textarea for comment input */}
                 <textarea className="comment-input" ref={commentContent} placeholder="Write here your comment.." />

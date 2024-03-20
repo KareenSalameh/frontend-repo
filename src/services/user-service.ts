@@ -8,7 +8,7 @@ export interface IUser{
     imgUrl?: string,
     _id?:string,
     accessToken?: string,
-    refreshToken?: string
+    refreshTokens?: string[]; // Add refreshTokens field
   }
   export const registerUser = (user:IUser) => {
     return new Promise<IUser>((resolve, reject) => {

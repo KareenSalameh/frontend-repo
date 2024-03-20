@@ -4,6 +4,8 @@ import './MyPosts.css';
 
 function MyPosts() {
     const [localStoragePosts, setLocalStoragePosts] = useState<PostData[]>([]);
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    const userId = user._id;
 
     useEffect(() => {
         // Retrieve posts from local storage
@@ -12,7 +14,7 @@ function MyPosts() {
             const storedPosts: PostData[] = JSON.parse(storedPostsJSON);
             setLocalStoragePosts(storedPosts);
         }
-    }, []);
+    }, [userId]);
 
     const handleEdit = async (postId: string) => {
         try {
@@ -49,23 +51,26 @@ function MyPosts() {
 
     return (
         <div>
-            {/* Posts from local storage */}
-            {localStoragePosts.length > 0 && (
-                <ul>
-                    {localStoragePosts.map((post, index) => (
-                        <li key={`local-${index}`} className="my-post-container p2">
-                            <div>
-                                <h3 className="my-post-title">{post.title}</h3>
-                                <p className="my-post-text">{post.message}</p>
-                                {post.postImg && <img src={post.postImg} alt="postImg" className="my-post-image p2" />}
-                                <button onClick={() => handleEdit(post._id ?? '')} className="my-post-button my-edit-button p2">Edit</button>
-                                <button onClick={() => handleDelete(post._id ?? '')} className="my-post-button my-delete-button p2">Delete</button>
-                            </div>
-                        </li>
-                    ))}
-                </ul>
-            )}
-        </div>
+        {/* Posts from local storage */}
+        {localStoragePosts.length > 0 ? (
+            <ul>
+                {localStoragePosts.map((post, index) => (
+                    <li key={`local-${index}`} className="my-post-container p2">
+                        <div>
+                            <h3 className="my-post-title">{post.title}</h3>
+                            <p className="my-post-text">{post.message}</p>
+                            {post.postImg && <img src={post.postImg} alt="postImg" className="my-post-image p2" />}
+                            <button onClick={() => handleEdit(post._id ?? '')} className="my-post-button my-edit-button p2">Edit</button>
+                            <button onClick={() => handleDelete(post._id ?? '')} className="my-post-button my-delete-button p2">Delete</button>
+                        </div>
+                    </li>
+                ))}
+            </ul>
+        ) : (
+            <p className='noPost'>No Created Posts yet!</p>
+        )}
+    </div>
+
     );
 
 }

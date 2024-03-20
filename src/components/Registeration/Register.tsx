@@ -7,6 +7,7 @@ import { uploadPhoto } from '../../services/file-service';
 import { registerUser, GoogleSignin, IUser } from '../../services/user-service';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { Link, useHistory } from 'react-router-dom'; // Import useHistory hook
+import { generateRefreshToken } from '../../services/auth_service'; // 
 
 function Register() {
   const [ImgSrc, setImg] = useState<File>();
@@ -36,38 +37,69 @@ function Register() {
             imgUrl: url
         };
         try {
-            await registerUser(user)
-                .then(res => {
-                    if (res) {
-                        const userId = res._id; 
-                        const access = res.accessToken;
-                        const refresh = res.refreshToken;
-                        console.log("User registered with ID:", userId);
-                        console.log("User registered with access:", access);
-                        console.log("User registered with refresh:", refresh);
-
-                        localStorage.setItem('userId', userId as string);
-                        localStorage.setItem('access', access as string);
-                        localStorage.setItem('refresh', refresh as string);
-
-                        user._id = userId;
-                    } else {
-                        console.error("Error registering user: Response is undefined");
-                    }
-                })
-                .catch(err => {
-                    console.error("Error registering user:", err);
-                });
-            localStorage.setItem('user', JSON.stringify(user));
-            history.push('/login');
+          // Generate refresh token
+          const refreshToken = generateRefreshToken();
+        
+          await registerUser(user)
+            .then(res => {
+              if (res) {
+                const userId = res._id; 
+                const access = res.accessToken;
+               // const refresh = res.refreshTokens;
+                console.log("User registered with ID:", userId);
+                console.log("User registered with access token:", access);
+                console.log("User registered with refresh token:", refreshToken);
+        
+                // Save tokens to local storage
+                localStorage.setItem('userId', userId as string);
+                localStorage.setItem('ACCESS_TOKEN_KEY', access as string);
+                localStorage.setItem('REFRESH_TOKEN_KEY', JSON.stringify(refreshToken));
+        
+                user._id = userId;
+              } else {
+                console.error("Error registering user: Response is undefined");
+              }
+            })
+            .catch(err => {
+              console.error("Error registering user:", err);
+            });
+          localStorage.setItem('user', JSON.stringify(user));
+          history.push('/login');
         } catch (e) {
-            console.log("Registration error", e);
+          console.log("Registration error", e);
         }
-    }
+      }
 };
+//         try {
+//             await registerUser(user)
+//                 .then(res => {
+//                     if (res) {
+//                         const userId = res._id; 
+//                         const access = res.accessToken;
+//                         const refresh = res.refreshTokens;
+//                         console.log("User registered with ID:", userId);
+//                         console.log("User registered with access:", access);
+//                         console.log("User registered with refresh:", refresh);
 
+//                         localStorage.setItem('userId', userId as string);
+//                         localStorage.setItem('access', access as string);
+//                         localStorage.setItem('refresh', refresh);
 
-
+//                         user._id = userId;
+//                     } else {
+//                         console.error("Error registering user: Response is undefined");
+//                     }
+//                 })
+//                 .catch(err => {
+//                     console.error("Error registering user:", err);
+//                 });
+//             localStorage.setItem('user', JSON.stringify(user));
+//             history.push('/login');
+//         } catch (e) {
+//             console.log("Registration error", e);
+//         }
+//     }
+// };
 
   const selectImg = () => {
     console.log('Select Img');
