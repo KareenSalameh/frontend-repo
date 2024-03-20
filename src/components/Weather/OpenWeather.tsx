@@ -21,13 +21,12 @@ const MyWeather: React.FC = () => {
       setWeatherData(response.data);
     } catch (error) {
       console.error(error);
-      // Handle errors gracefully (e.g., display an error message to the user)
     }
   };
 
   useEffect(() => {
     fetchWeather();
-  }, [city]); // Re-fetch weather data on city change
+  }, [city]); 
 
   if (!weatherData) {
     return <div style={loadingStyle}>Loading weather data...</div>;
