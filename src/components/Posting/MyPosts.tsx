@@ -3,7 +3,10 @@ import { PostData } from "../../services/posts-service";
 import './MyPosts.css'; 
 
 function MyPosts() {
+    
     const [localStoragePosts, setLocalStoragePosts] = useState<PostData[]>([]);
+    const [editData, setEditData] = useState<{ id: string; title: string; message: string }>({ id: "", title: "", message: "" });
+    const [editMode, setEditMode] = useState(false);
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const userId = user._id;
 
@@ -12,30 +15,49 @@ function MyPosts() {
         const storedPostsJSON = localStorage.getItem('posts');
         if (storedPostsJSON) {
             const storedPosts: PostData[] = JSON.parse(storedPostsJSON);
-            setLocalStoragePosts(storedPosts);
+            const userPosts = storedPosts.filter(post => post._id === userId);
+
+            setLocalStoragePosts(userPosts);
         }
     }, [userId]);
 
-    const handleEdit = async (postId: string) => {
+    const handleEdit = (postId: string) => {
+        // Find the post to edit
+        const postToEdit = localStoragePosts.find(post => post._id === postId);
+        if (postToEdit) {
+            // Set the edit data to the post's current title and message
+            setEditData({ id: postId, title: postToEdit.title, message: postToEdit.message });
+            setEditMode(true);
+        }
+    };
+
+    const handleCancel = () => {
+        // Reset edit mode and edit data
+        setEditMode(false);
+        setEditData({ id: "", title: "", message: "" });
+    };
+
+    const handleSubmit = (postId: string) => {
         try {
-            // Find the post to edit
-            const editedPosts = localStoragePosts.map(post => {
+            // Update the post with the edited data
+            const updatedPosts = localStoragePosts.map(post => {
                 if (post._id === postId) {
-                    // Edit the post here
-                    return { ...post, title: "Edited Title", message: "Edited Message" }; // Replace with your logic
+                    return { ...post, title: editData.title, message: editData.message };
                 }
                 return post;
             });
-            localStorage.setItem('posts', JSON.stringify(editedPosts));
+            localStorage.setItem('posts', JSON.stringify(updatedPosts));
             // Update state
-            setLocalStoragePosts(editedPosts);
+            setLocalStoragePosts(updatedPosts);
+            setEditMode(false);
+            setEditData({ id: "", title: "", message: "" });
             console.log("Post edited successfully:", postId);
         } catch (error) {
             console.error("Error editing post:", error);
         }
     };
 
-    const handleDelete = async (postId: string) => {
+    const handleDelete = (postId: string) => {
         try {
             // Filter out the post to delete
             const updatedPosts = localStoragePosts.filter(post => post._id !== postId);
@@ -51,31 +73,142 @@ function MyPosts() {
 
     return (
         <div>
-        {/* Posts from local storage */}
-        {localStoragePosts.length > 0 ? (
-            <ul>
-                {localStoragePosts.map((post, index) => (
-                    <li key={`local-${index}`} className="my-post-container p2">
-                        <div>
-                            <h3 className="my-post-title">{post.title}</h3>
-                            <p className="my-post-text">{post.message}</p>
-                            {post.postImg && <img src={post.postImg} alt="postImg" className="my-post-image p2" />}
-                            <button onClick={() => handleEdit(post._id ?? '')} className="my-post-button my-edit-button p2">Edit</button>
-                            <button onClick={() => handleDelete(post._id ?? '')} className="my-post-button my-delete-button p2">Delete</button>
-                        </div>
-                    </li>
-                ))}
-            </ul>
-        ) : (
-            <p className='noPost'>No Created Posts yet!</p>
-        )}
-    </div>
+            {/* Posts from local storage */}
+            {localStoragePosts.length > 0 ? (
+                <ul>
+                    {localStoragePosts.map((post, index) => (
+                        <li key={`local-${index}`} className="my-post-container p2">
+                            <div>
+                                {editMode && post._id === editData.id ? (
+                                    <div className="edit-form">
+                                        <label className="input-txt">Title:</label>
+                                        <input
+                                            type="text"
+                                            value={editData.title}
+                                            onChange={(e) => setEditData({ ...editData, title: e.target.value })}
+                                            placeholder="Enter title"
+                                        />
+                                        <label className="input-txt">Message:</label>
+                                        <textarea
+                                            value={editData.message}
+                                            onChange={(e) => setEditData({ ...editData, message: e.target.value })}
+                                            placeholder="Enter message"
+                                            rows={4}
+                                        />
+                                        <div className="edit-buttons">
+                                          <button onClick={() => handleSubmit(post._id ?? '')}>Save</button>
+                                          <button onClick={handleCancel}>Cancel</button>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div>
+                                        <h3 className="names">Post Title:</h3>
 
+                                        <h3 className="my-post-title">{post.title}</h3>
+                                        <h3 className="names">Post Description:</h3>
+
+                                        <p className="my-post-text">{post.message}</p>
+                                        {post.postImg && <img src={post.postImg} alt="postImg" className="my-post-image p2" />}
+                                        <div className="edit-buttons">
+                                          <button onClick={() => handleEdit(post._id ?? '')} className="my-post-button my-edit-button p2">Edit</button>
+                                          <button onClick={() => handleDelete(post._id ?? '')} className="my-post-button my-delete-button p2">Delete</button>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </li>
+                    ))}
+                </ul>
+            ) : (
+                <p className='noPost'>No Created Posts yet!</p>
+            )}
+        </div>
     );
-
 }
 
 export default MyPosts;
+
+// import React, { useEffect, useState } from 'react';
+// import { PostData } from "../../services/posts-service";
+// import './MyPosts.css'; 
+
+// function MyPosts() {
+    
+//     const [localStoragePosts, setLocalStoragePosts] = useState<PostData[]>([]);
+//     const user = JSON.parse(localStorage.getItem('user') || '{}');
+//     const userId = user._id;
+
+//     useEffect(() => {
+//         // Retrieve posts from local storage
+//         const storedPostsJSON = localStorage.getItem('posts');
+//         if (storedPostsJSON) {
+//             const storedPosts: PostData[] = JSON.parse(storedPostsJSON);
+//             const userPosts = storedPosts.filter(post => post._id === userId);
+
+//             setLocalStoragePosts(userPosts);
+//         }
+//     }, [userId]);
+
+//     const handleEdit = async (postId: string) => {
+//         try {
+//             // Find the post to edit
+//             const editedPosts = localStoragePosts.map(post => {
+//                 if (post._id === postId) {
+//                     // Edit the post here
+//                     return { ...post, title: "Edited Title", message: "Edited Message" }; // Replace with your logic
+//                 }
+//                 return post;
+//             });
+//             localStorage.setItem('posts', JSON.stringify(editedPosts));
+//             // Update state
+//             setLocalStoragePosts(editedPosts);
+//             console.log("Post edited successfully:", postId);
+//         } catch (error) {
+//             console.error("Error editing post:", error);
+//         }
+//     };
+
+//     const handleDelete = async (postId: string) => {
+//         try {
+//             // Filter out the post to delete
+//             const updatedPosts = localStoragePosts.filter(post => post._id !== postId);
+//             // Update the local storage with the updated posts
+//             localStorage.setItem('posts', JSON.stringify(updatedPosts));
+//             // Update state
+//             setLocalStoragePosts(updatedPosts);
+//             console.log("Post deleted successfully:", postId);
+//         } catch (error) {
+//             console.error("Error deleting post:", error);
+//         }
+//     };
+
+//     return (
+//         <div>
+//         {/* Posts from local storage */}
+//         {localStoragePosts.length > 0 ? (
+//             <ul>
+//                 {localStoragePosts.map((post, index) => (
+//                     <li key={`local-${index}`} className="my-post-container p2">
+//                         <div>
+//                             <h3 className="my-post-title">{post.title}</h3>
+//                             <p className="my-post-text">{post.message}</p>
+//                             {post.postImg && <img src={post.postImg} alt="postImg" className="my-post-image p2" />}
+//                             <button onClick={() => handleEdit(post._id ?? '')} className="my-post-button my-edit-button p2">Edit</button>
+//                             <button onClick={() => handleDelete(post._id ?? '')} className="my-post-button my-delete-button p2">Delete</button>
+//                         </div>
+//                     </li>
+//                 ))}
+//             </ul>
+//         ) : (
+//             <p className='noPost'>No Created Posts yet!</p>
+//         )}
+//     </div>
+
+//     );
+
+// }
+
+// export default MyPosts;
 
 
 

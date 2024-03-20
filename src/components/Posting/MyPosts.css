@@ -1,81 +1,60 @@
-/* MyPosts.css */
-
-/* Container for the entire component */
-.my-posts-container {
-  margin: 20px;
-}
-
-/* Style for each individual post */
 .my-post-container {
-  border: 1px solid #ccc;
-  border-radius: 5px;
-  padding: 10px;
-  margin-bottom: 10px;
-  width: 800px;
-  margin-left: 150px;
-  margin-top: 40px
+  margin: 20px 10px; /* Margin 20px top and bottom, 10px left and right */
+  padding: 20px; /* Add padding for better spacing inside the container */
+  background-color: aliceblue;
+  font-family: Arial, sans-serif; /* Specify a fallback font */
+  border-radius: 10px;
+  max-width: 800px;
+  height: 240px !important;
+  margin-left: 260px;
+  margin-top: 50px;
 }
 
-/* Title style */
-.my-post-title {
-  font-size: 1.2rem;
+.my-post-details {
+  margin-left: 10px; /* Add margin to the left for the details */
+}
+
+.my-post-details p {
+  margin-bottom: 10px; /* Add spacing between paragraphs */
+}
+
+.edit-form {
+  display: flex;
+  flex-direction: column;
+}
+
+.edit-form .input-txt {
   margin-bottom: 5px;
-  color: #fff;
-
 }
 
-/* Text style */
-.my-post-text {
-  margin-bottom: 10px;
-  margin-top: 20px;
-
+.my-post-container button {
+  margin-right: 10px;
 }
 
-/* Image style */
-.my-post-image {
-  max-width: 40%;
+.my-post-container .my-post-image {
+  max-width: 100%;
   height: auto;
-  margin-bottom: 10px;
-  margin-top: 20px;
+  margin-top: 10px;
 }
 
-/* Button style */
-.my-post-button {
-  margin-left: 20px;
-  cursor: pointer;
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  border-radius: 3px;
-  padding: 5px 10px;
+.my-post-container .edit-buttons {
+  margin-top: 10px;
 }
 
-.my-post-button:hover {
-  background-color: #0056b3;
+.my-post-container .edit-buttons button {
+  margin-right: 10px;
 }
-
-/* Edit button */
-.my-edit-button {
-  background-color: #28a745;
-}
-
-.my-edit-button:hover {
-  background-color: #218838;
-}
-
-/* Delete button */
-.my-delete-button {
-  background-color: #dc3545;
-}
-
-.my-delete-button:hover {
-  background-color: #c82333;
-}
-
-.noPost{
-  margin-left: 450px;
-  margin-top: 250px;
-  font-size: 30px;
+.names{
+  font-size: 20px;
   font-weight: bold;
-  color: #fff;
+  margin-left: 10px;
+}
+.my-post-title{
+  margin-left: 20px;
+  font-size: 24px;
+}
+
+.my-post-text{
+  margin-left: 20px;
+  font-size: 20px;
 }

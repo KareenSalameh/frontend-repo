@@ -37,10 +37,10 @@ export const GoogleSignin = (credentialResponse: CredentialResponse) => {
     });
 
 }
-export const getUserData = () => {
+export const getUserData = (userId: string) => {
     return new Promise<IUser>((resolve, reject) => {
       apiClient
-        .get("/user")
+        .get(`/user/${userId}`)
         .then((response) => {
           resolve(response.data as IUser);
         })

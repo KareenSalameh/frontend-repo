@@ -31,27 +31,13 @@ function Login() {
   
     try {
       await loginUser({email, password});
-      // console.log("User data:", user);
-      // console.log("name" , user.name)
-      // if (user && user._id) {
-      //   const userId = user._id;
-      //   console.log("User registered with ID:", userId);
-      //   localStorage.setItem('name', user.name);
-      //   localStorage.setItem('user', JSON.stringify(user));
-      // } else {
-      //   console.error("Error Login user: User or user ID is undefined");
-      // }
   
       history.push('/');
    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    } catch (error: any) {
+  } catch (error) {
       console.error("Login error:", error);
-      if (error.response && error.response.status === 401) {
-        alert("Invalid email or password. Please try again.");
-      } else {
-        // Other errors
-        alert("An error occurred. Please try again later.");
-      }
+      alert("Invalid email or password. Please try again.");
+
     }
   };
 
@@ -79,7 +65,9 @@ function Login() {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
       />
-      {emailInputRef.current?.value && !emailInputRef.current.value.includes('@') && ( <p className="text-white">Invalid email</p>)}
+      {emailInputRef.current?.value && !emailInputRef.current.value.includes('@') &&
+       ( <p className="text-white">Invalid email</p>)}
+             {emailError && <p className="error-message">{emailError}</p>}
       <input
         ref={passwordInputRef}
         type="password"
@@ -98,6 +86,37 @@ function Login() {
       <Link to="/register" className="register-link">Don't have an account? Register here.</Link>
     </div>
   );
+  
 }
+
+// function setCookie(name: string, value: string, days: number) {
+//   let expires = "";
+//   if (days) {
+//       const date = new Date();
+//       date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+//       expires = "; expires=" + date.toUTCString();
+//   }
+//   document.cookie = name + "=" + (value || "") + expires + "; path=/";
+// }
+
+// function getCookie(name: string) {
+//   const nameEQ = name + "=";
+//   const ca = document.cookie.split(';');
+//   for (let i = 0; i < ca.length; i++) {
+//       let c = ca[i];
+//       while (c.charAt(0) === ' ') c = c.substring(1, c.length);
+//       if (c.indexOf(nameEQ) === 0) return c.substring(nameEQ.length, c.length);
+//   }
+//   return null;
+// }
+
+
+// setCookie('user_id', 'your_user_id_here', 30); // Set a cookie named 'user_id' with the user's identifier, which expires in 30 days
+
+
+// const userId = getCookie('user_id');
+// if (userId) {
+//   console.log('User is logged in automatically with user ID:', userId);
+// }
 
 export default Login;

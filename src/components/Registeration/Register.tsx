@@ -11,6 +11,10 @@ import { generateRefreshToken } from '../../services/auth_service'; //
 
 function Register() {
   const [ImgSrc, setImg] = useState<File>();
+  const [isImageSelected, setIsImageSelected] = useState(false); // State to track if an image is selected
+  const [nameError, setNameError] = useState("");
+  const [emailError, setEmailError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
   const fileInputRef = useRef<HTMLInputElement>(null);
   const nameInputRef = useRef<HTMLInputElement>(null);
   const emailInputRef = useRef<HTMLInputElement>(null);
@@ -22,89 +26,95 @@ function Register() {
     if (event.target.files && event.target.files.length > 0) {
       const newUrl = event.target.files[0];
       setImg(newUrl);
+      setIsImageSelected(true);
     }
   };
 
   const onRegister = async () => {
+    setNameError("");
+    setEmailError("");
+    setPasswordError("");
+
+    if (!nameInputRef.current?.value || !emailInputRef.current?.value || !passwordInputRef.current?.value) {
+      alert("Please fill all fields.");
+      return;
+    }
+
+    if (!isImageSelected) {
+      alert("Please select an image.");
+      return;
+    }
+
     const url = await uploadPhoto(ImgSrc!);
     console.log("upload returned: " + url);
-    if (nameInputRef.current?.value && emailInputRef.current?.value &&
-        passwordInputRef.current?.value) {
-        const user: IUser = {
-            name: nameInputRef.current?.value,
-            email: emailInputRef.current?.value,
-            password: passwordInputRef.current?.value,
-            imgUrl: url
-        };
-        try {
-          // Generate refresh token
-          const refreshToken = generateRefreshToken();
-        
-          await registerUser(user)
-            .then(res => {
-              if (res) {
-                const userId = res._id; 
-                const access = res.accessToken;
-               // const refresh = res.refreshTokens;
-                console.log("User registered with ID:", userId);
-                console.log("User registered with access token:", access);
-                console.log("User registered with refresh token:", refreshToken);
-        
-                // Save tokens to local storage
-                localStorage.setItem('userId', userId as string);
-                localStorage.setItem('ACCESS_TOKEN_KEY', access as string);
-                localStorage.setItem('REFRESH_TOKEN_KEY', JSON.stringify(refreshToken));
-        
-                user._id = userId;
-              } else {
-                console.error("Error registering user: Response is undefined");
-              }
-            })
-            .catch(err => {
-              console.error("Error registering user:", err);
-            });
-          localStorage.setItem('user', JSON.stringify(user));
-          history.push('/login');
-        } catch (e) {
-          console.log("Registration error", e);
-        }
-      }
-};
-//         try {
-//             await registerUser(user)
-//                 .then(res => {
-//                     if (res) {
-//                         const userId = res._id; 
-//                         const access = res.accessToken;
-//                         const refresh = res.refreshTokens;
-//                         console.log("User registered with ID:", userId);
-//                         console.log("User registered with access:", access);
-//                         console.log("User registered with refresh:", refresh);
 
-//                         localStorage.setItem('userId', userId as string);
-//                         localStorage.setItem('access', access as string);
-//                         localStorage.setItem('refresh', refresh);
+    const name = nameInputRef.current?.value;
+    const email = emailInputRef.current?.value;
+    const password = passwordInputRef.current?.value;
 
-//                         user._id = userId;
-//                     } else {
-//                         console.error("Error registering user: Response is undefined");
-//                     }
-//                 })
-//                 .catch(err => {
-//                     console.error("Error registering user:", err);
-//                 });
-//             localStorage.setItem('user', JSON.stringify(user));
-//             history.push('/login');
-//         } catch (e) {
-//             console.log("Registration error", e);
-//         }
-//     }
-// };
+    if (name && (name.length < 2 || name.length > 30 || !name.includes(' '))) {
+      setNameError("Name must have 2 until 30 characters and contain space");
+      console.log(nameError)
+      return;
+    }
+
+    if (email && !email.includes('@')) {
+      setEmailError("Invalid email");
+      console.log(emailError)
+
+      return;
+    }
+
+    if (password && (password.length < 4 || password.length > 20)) {
+      console.log(passwordError)
+
+      setPasswordError("Password must have 4 until 20 characters");
+      return;
+    }
+
+    const user: IUser = {
+      name: name!,
+      email: email!,
+      password: password!,
+      imgUrl: url
+    };
+
+    try {
+      const refreshToken = generateRefreshToken();
+    
+      await registerUser(user)
+        .then(res => {
+          if (res) {
+            const userId = res._id; 
+            const access = res.accessToken;
+            console.log("User registered with ID:", userId);
+            console.log("User registered with access token:", access);
+            console.log("User registered with refresh token:", refreshToken);
+    
+            localStorage.setItem('userId', userId as string);
+            localStorage.setItem('ACCESS_TOKEN_KEY', access as string);
+            localStorage.setItem('REFRESH_TOKEN_KEY', JSON.stringify(refreshToken));
+    
+            user._id = userId;
+          } else {
+            console.error("Error registering user: Response is undefined");
+          }
+        })
+        .catch(err => {
+          console.error("Error registering user:", err);
+        });
+      localStorage.setItem('user', JSON.stringify(user));
+      history.push('/login');
+    } catch (e) {
+      console.log("Registration error", e);
+    }
+  };
 
   const selectImg = () => {
     console.log('Select Img');
     fileInputRef.current?.click();
   };
+
   const onGoogleLoginSuccess = async (credentialResponse: CredentialResponse) => {
     console.log(credentialResponse);
     try {
@@ -115,9 +125,11 @@ function Register() {
       console.log(e);
     }
   };
+
   const onGoogleLoginFailure = () => {
     console.log("Google login Failed");
   };
+
 
   return (
     <div className="register-container">
@@ -130,6 +142,7 @@ function Register() {
           <FontAwesomeIcon icon={faImage} className='fa-xl' />
         </button>
       </div>
+      {!isImageSelected && <p className="text-white">Please select an image</p>}
 
       <input ref={nameInputRef} type="text" className="register-input" placeholder="Full Name" />
       {nameInputRef.current?.value && (nameInputRef.current.value.length < 2 || nameInputRef.current.value.length > 30 || !nameInputRef.current.value.includes(' ')) && (
@@ -138,7 +151,7 @@ function Register() {
       {emailInputRef.current?.value && !emailInputRef.current.value.includes('@') && ( <p className="text-white">Invalid email</p>)}
       <input ref={passwordInputRef} type="password" className="register-input" placeholder="Password" />
       {passwordInputRef.current?.value && (passwordInputRef.current.value.length < 4 || passwordInputRef.current.value.length > 20) && ( <p className="text-white">Password must have 4 until 20 characters</p>)}
-      <button type="button" className="register-button" onClick={onRegister}>Register</button>
+      <button type="submit" className="register-button" onClick={onRegister}>Register</button>
 
       <div className='google'>
         <GoogleLogin onSuccess={onGoogleLoginSuccess} onError={onGoogleLoginFailure} />
