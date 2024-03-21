@@ -2,7 +2,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useHistory } from 'react-router-dom';
 import './Post.css';
 import { PostData } from '../../services/posts-service';
-import {  UpdateCommentCount } from '../../services/comment-service';
+import {  UpdateCommentCount, CommentCount, getAllComments } from '../../services/comment-service';
 import apiClient from '../../services/api-client';
 
 interface PostProps {
@@ -26,11 +26,32 @@ const Post: React.FC<PostProps> = ({ post }) => {
     const commentContent = useRef<HTMLTextAreaElement>(null);
     const [comments, setComments] = useState<Comment[]>([]);
 
+    // useEffect(() => {
+    //     // Load comments count from local storage
+    //     const storedCommentCount = localStorage.getItem(`commentCount_${post._id}`);
+    //     if (storedCommentCount) {
+    //         setCommentCount(parseInt(storedCommentCount));
+    //     }
+    //     const fetchCommentCount = async () => {
+    //         try {
+    //             const count = await CommentCount(post._id ?? '');
+    //             setCommentCount(count);
+
+    //             // Update local storage with the latest count
+    //             localStorage.setItem(`commentCount_${post._id}`, String(count));
+    //         } catch (error) {
+    //             console.error("Error fetching comment count:", error);
+    //         }
+    //     };
+
+    //     fetchCommentCount();
+    // }, [post._id]);
     useEffect(() => {
-        // Load comments count from local storage
         const storedCommentCount = localStorage.getItem(`commentCount_${post._id}`);
-        if (storedCommentCount) {
+        if (storedCommentCount !== null) {
             setCommentCount(parseInt(storedCommentCount));
+        } else {
+            CommentCount;
         }
     }, [post._id]);
 
@@ -43,13 +64,50 @@ const Post: React.FC<PostProps> = ({ post }) => {
             const postId = post._id;
             const comments: Comment[] = JSON.parse(localStorage.getItem('comments') || '[]');
             const postComments = comments.filter(comment => comment.postId === postId);
-            setComments(postComments);
+          //  setComments(postComments);
+            //await getAllComments();
+           // const res = await getAllComments();
+            const { req } = getAllComments();
+              const response = await req;
+            const mergedComments = [...response.data, ...postComments];
+              
+              setComments(mergedComments);
             history.push(`/userpost/${postId}`, { comments: postComments });
         } catch (error) {
             console.error('Failed to fetch comments:', error);
         }
     };
 
+    // const handleAddComment = async () => {
+    //     if (commentContent.current?.value.trim() !== "") {
+    //         try {
+    //             const user = JSON.parse(localStorage.getItem('user') || '{}');
+    //             const comment = {
+    //                 content: commentContent.current!.value.trim(),
+    //                 postId: post._id!,
+    //                 owner: {
+    //                     name: user.name,
+    //                     imgUrl: user.imgUrl,
+    //                 },
+    //                 createdAt: new Date(),
+    //             };
+    //             const storedComments = JSON.parse(localStorage.getItem('comments') || '[]');
+    //             const updatedComments = [...storedComments, comment];
+    //             localStorage.setItem('comments', JSON.stringify(updatedComments));
+    //             commentContent.current!.value = "";
+
+    //             const updatedCount = commentCount + 1;
+    //             setCommentCount(updatedCount);
+    //             localStorage.setItem(`commentCount_${post._id}`, updatedCount.toString());
+
+    //             await UpdateCommentCount(post._id!, updatedCount);
+    //             await apiClient.put(`/comments/count/${post._id}`, { count: updatedCount });
+
+    //         } catch (err) {
+    //             console.error(err);
+    //         }
+    //     }
+    // };
     const handleAddComment = async () => {
         if (commentContent.current?.value.trim() !== "") {
             try {
@@ -67,14 +125,15 @@ const Post: React.FC<PostProps> = ({ post }) => {
                 const updatedComments = [...storedComments, comment];
                 localStorage.setItem('comments', JSON.stringify(updatedComments));
                 commentContent.current!.value = "";
-
+    
                 const updatedCount = commentCount + 1;
                 setCommentCount(updatedCount);
                 localStorage.setItem(`commentCount_${post._id}`, updatedCount.toString());
-
+    
+                // Update the comment count in the database
                 await UpdateCommentCount(post._id!, updatedCount);
                 await apiClient.put(`/comments/count/${post._id}`, { count: updatedCount });
-
+    
             } catch (err) {
                 console.error(err);
             }

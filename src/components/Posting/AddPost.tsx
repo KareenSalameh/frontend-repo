@@ -27,7 +27,6 @@ const AddPost: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     
-    // Create a post object with the form data
     const postData: PostDescription = {
       title,
       message,
@@ -37,8 +36,8 @@ const AddPost: React.FC = () => {
     try {
       savePostToLocalStorage(postData);
 
-      //await createPost(postData);
-      
+  //    await createPost(postData);
+
       setTitle('');
       setMessage('');
       setPostImg('');

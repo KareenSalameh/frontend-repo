@@ -7,7 +7,7 @@ interface GoogleMapsProps {
 }
 
 const GoogleMaps: React.FC<GoogleMapsProps> = ({ latitude, longitude }) => {
-  const apiKey = 'AIzaSyAc15uVFtPpV0T8gBJIJm8gmMnfiSg3alA';
+  const apiKey = process.env.Google_APP_API_KEY;
 
   const containerStyle = {
     width: '100%', // Adjust width as needed
@@ -20,7 +20,7 @@ const GoogleMaps: React.FC<GoogleMapsProps> = ({ latitude, longitude }) => {
   };
 
   return (
-    <LoadScript googleMapsApiKey={apiKey}>
+    <LoadScript googleMapsApiKey={apiKey || ''}>
       <GoogleMap
         mapContainerStyle={containerStyle}
         center={center}

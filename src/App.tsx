@@ -7,8 +7,6 @@ import Profile from './components/Profile/Profile';
 import MyPosts from './components/Posting/MyPosts';
 import Login from '../src/components/Registeration/Login';
 import PostComments from './components/Comments/PostComment';
-//import Parent from './components/ParentFetching';
-//API REST KEY : AIzaSyAc15uVFtPpV0T8gBJIJm8gmMnfiSg3alA
 import Maps from '../src/components/Map/GoogleMaps';
 import AddPost from './components/Posting/AddPost';
 import OpenWeather from './components/Weather/OpenWeather';
@@ -93,26 +91,7 @@ function PostComments2(){
   return(
     <>
       <Navbar />
-      <PostComments location={{
-        state: {
-          post: 
-          {
-            title: '',
-            message: '',
-            owner: ' ',
-            postImg: '',
-            comments: [{
-              postId: '123',
-              content: 'This is a sample comment',
-              owner: {
-                name: 'Anonymous',
-                imgUrl: 'https://via.placeholder.com/150',
-              },
-              createdAt: new Date(),
-            }]
-          }
-        }
-      }} />
+      <PostComments />
     </>
   );
 }

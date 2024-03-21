@@ -5,6 +5,7 @@ import { useParams, useLocation } from "react-router-dom";
 //import { getPostById } from '../../services/posts-service';
 import './PostComment.css';
 
+
 interface PostCommentProps {
     // Remove the "location" prop
 }
@@ -22,16 +23,22 @@ const PostComment: React.FC<PostCommentProps> = () => {
     useEffect(() => {
         const fetchComments = async () => {
             try {
-                // Retrieve comments from location state
-                const postComments: Comment[] = location.state ? location.state.comments : [];
-                setComments(postComments);
+              // const { req } = getAllComments();
+              // const response = await req;
+              
+              //Retrieve comments from location state
+            const postComments: Comment[] = location.state ? location.state.comments : [];
+            //  Merge the arrays using spread syntax
+            // const mergedComments = [...postComments, ...response.data];
+              
+              setComments(postComments);
             } catch (error) {
                 console.error('Error fetching comments:', error);
             }
         };
 
         fetchComments();
-    }, [location]);
+    }, []);
 
     return (
       <div>

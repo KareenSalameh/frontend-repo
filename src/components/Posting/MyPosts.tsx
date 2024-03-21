@@ -5,7 +5,7 @@ import './MyPosts.css';
 function MyPosts() {
     
     const [localStoragePosts, setLocalStoragePosts] = useState<PostData[]>([]);
-    const [editData, setEditData] = useState<{ id: string; title: string; message: string }>({ id: "", title: "", message: "" });
+    const [editData, setEditData] = useState<{ id: string; title: string; message: string; postImg: string | undefined }>({ id: "", title: "", message: "", postImg: undefined });
     const [editMode, setEditMode] = useState(false);
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     const userId = user._id;
@@ -25,8 +25,8 @@ function MyPosts() {
         // Find the post to edit
         const postToEdit = localStoragePosts.find(post => post._id === postId);
         if (postToEdit) {
-            // Set the edit data to the post's current title and message
-            setEditData({ id: postId, title: postToEdit.title, message: postToEdit.message });
+            // Set the edit data to the post's current title, message, and postImg
+            setEditData({ id: postId, title: postToEdit.title, message: postToEdit.message, postImg: postToEdit.postImg });
             setEditMode(true);
         }
     };
@@ -34,7 +34,7 @@ function MyPosts() {
     const handleCancel = () => {
         // Reset edit mode and edit data
         setEditMode(false);
-        setEditData({ id: "", title: "", message: "" });
+        setEditData({ id: "", title: "", message: "", postImg: undefined });
     };
 
     const handleSubmit = (postId: string) => {
@@ -42,15 +42,15 @@ function MyPosts() {
             // Update the post with the edited data
             const updatedPosts = localStoragePosts.map(post => {
                 if (post._id === postId) {
-                    return { ...post, title: editData.title, message: editData.message };
+                    return { ...post, title: editData.title, message: editData.message, postImg: editData.postImg };
                 }
                 return post;
             });
             localStorage.setItem('posts', JSON.stringify(updatedPosts));
             // Update state
-            setLocalStoragePosts(updatedPosts);
+            setLocalStoragePosts(updatedPosts as PostData[]);
             setEditMode(false);
-            setEditData({ id: "", title: "", message: "" });
+            setEditData({ id: "", title: "", message: "", postImg: undefined });
             console.log("Post edited successfully:", postId);
         } catch (error) {
             console.error("Error editing post:", error);
@@ -68,6 +68,15 @@ function MyPosts() {
             console.log("Post deleted successfully:", postId);
         } catch (error) {
             console.error("Error deleting post:", error);
+        }
+    };
+
+   
+    const onImgSelected = (event: React.ChangeEvent<HTMLInputElement>) => {
+        console.log(event.target.value);
+        if (event.target.files && event.target.files.length > 0) {
+            const newUrl = event.target.files[0];
+            setEditData({ ...editData, postImg: URL.createObjectURL(newUrl) });
         }
     };
 
@@ -95,23 +104,28 @@ function MyPosts() {
                                             placeholder="Enter message"
                                             rows={4}
                                         />
+                                        <label className="input-txt">Post Image:</label>
+                                        <input
+                                            type="file"
+                                            accept="image/*"
+                                            onChange={onImgSelected}
+                                        />
+                                        {editData.postImg && <img src={editData.postImg} alt="postImg" className="edit-post-image p2" />}
                                         <div className="edit-buttons">
-                                          <button onClick={() => handleSubmit(post._id ?? '')}>Save</button>
-                                          <button onClick={handleCancel}>Cancel</button>
+                                            <button onClick={() => handleSubmit(post._id ?? '')}>Save</button>
+                                            <button onClick={handleCancel}>Cancel</button>
                                         </div>
                                     </div>
                                 ) : (
                                     <div>
                                         <h3 className="names">Post Title:</h3>
-
                                         <h3 className="my-post-title">{post.title}</h3>
                                         <h3 className="names">Post Description:</h3>
-
                                         <p className="my-post-text">{post.message}</p>
                                         {post.postImg && <img src={post.postImg} alt="postImg" className="my-post-image p2" />}
                                         <div className="edit-buttons">
-                                          <button onClick={() => handleEdit(post._id ?? '')} className="my-post-button my-edit-button p2">Edit</button>
-                                          <button onClick={() => handleDelete(post._id ?? '')} className="my-post-button my-delete-button p2">Delete</button>
+                                            <button onClick={() => handleEdit(post._id ?? '')} className="my-post-button my-edit-button p2">Edit</button>
+                                            <button onClick={() => handleDelete(post._id ?? '')} className="my-post-button my-delete-button p2">Delete</button>
                                         </div>
                                     </div>
                                 )}
@@ -127,6 +141,7 @@ function MyPosts() {
 }
 
 export default MyPosts;
+
 
 // import React, { useEffect, useState } from 'react';
 // import { PostData } from "../../services/posts-service";

@@ -7,7 +7,7 @@ import { uploadPhoto } from '../../services/file-service';
 import { registerUser, GoogleSignin, IUser } from '../../services/user-service';
 import { CredentialResponse, GoogleLogin } from '@react-oauth/google';
 import { Link, useHistory } from 'react-router-dom'; // Import useHistory hook
-import { generateRefreshToken } from '../../services/auth_service'; // 
+import { hasRefreshToken } from '../../services/token-service'; // 
 
 function Register() {
   const [ImgSrc, setImg] = useState<File>();
@@ -80,7 +80,7 @@ function Register() {
     };
 
     try {
-      const refreshToken = generateRefreshToken();
+      const refreshToken = hasRefreshToken();
     
       await registerUser(user)
         .then(res => {
@@ -120,11 +120,47 @@ function Register() {
     try {
       const res = await GoogleSignin(credentialResponse);
       console.log(res);
-      history.push('/');
+  
+      if (res) {
+        const { _id, accessToken } = res;
+        const refreshToken = hasRefreshToken();
+  
+        console.log("User registered with ID:", _id);
+        console.log("User registered with access token:", accessToken);
+        console.log("User registered with refresh token:", refreshToken);
+  
+        localStorage.setItem('userId', res._id ?? '');
+  
+        const user: IUser = {
+          _id,
+          name: res.name,
+          email: res.email,
+          password: res.password,
+          imgUrl: res.imgUrl // Assuming you have imgUrl in the response
+        };
+  
+        localStorage.setItem('user', JSON.stringify(user));
+        
+        // Redirect user to the desired page
+        history.push('/');
+      } else {
+        console.error("Error registering user: Response is undefined");
+      }
     } catch (e) {
       console.log(e);
     }
   };
+  
+  // const onGoogleLoginSuccess = async (credentialResponse: CredentialResponse) => {
+  //   console.log(credentialResponse);
+  //   try {
+  //     const res = await GoogleSignin(credentialResponse);
+  //     console.log(res);
+  //     history.push('/');
+  //   } catch (e) {
+  //     console.log(e);
+  //   }
+  // };
 
   const onGoogleLoginFailure = () => {
     console.log("Google login Failed");
