@@ -4,10 +4,14 @@ import App from './App.tsx'
 import 'bootstrap/dist/css/bootstrap.css'
 import { GoogleOAuthProvider } from '@react-oauth/google'
 
+const googleClientId = import.meta.env.VITE_GOOGLE_CLIENT_ID;
+
+
 ReactDOM.createRoot(document.getElementById('root')!).render(
-    <GoogleOAuthProvider clientId="632986613914-uhjteviggvm5odspcbeqgc8lh4fi0pdv.apps.googleusercontent.com">
+    <GoogleOAuthProvider clientId={googleClientId}>
     <React.StrictMode>
       <App />
     </React.StrictMode>
     </GoogleOAuthProvider>
 )
+
