@@ -11,7 +11,7 @@ interface WeatherData {
 const MyWeather: React.FC = () => {
   const [weatherData, setWeatherData] = useState<WeatherData | null>(null);
   const [city, setCity] = useState('Tel Aviv');
-  const apiKey = process.env.Weather_APP_API_KEY;
+  const apiKey = '174cd12447eef8aae1a61b9035a4b835';
 
   const fetchWeather = async () => {
     try {
